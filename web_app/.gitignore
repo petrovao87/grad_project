@@ -1,0 +1,15 @@
+/.git
+/.idea
+/env
+/__pycache__
+/uploads
+/templates
+/web_app/config.py
+/web_app/__pycache__/
+python.org.html
+db_test.py
+flask.log
+flask_app.py
+test.db
+test.txt
+wornpath2.jpg
