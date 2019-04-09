@@ -17,7 +17,10 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
-    #login_manager.login_view = 'registr'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
     @app.route('/', methods=['GET', 'POST'])
     def index():
@@ -34,7 +37,9 @@ def create_app():
 
     @app.route('/start')
     def start_func():
-        return render_template('start_work.html')
+        login_form = LoginForm()
+        time = datetime.now()
+        return render_template('start_work.html', form=login_form, time=time)
 
     @app.route('/login')
     def login():
@@ -54,7 +59,7 @@ def create_app():
             if user and user.check_password(form.password.data):
                 login_user(user)
                 flash('Вы вошли на сайт')
-                return redirect(url_for('index'))
+                return redirect(url_for('start_func'))
 
         flash('Неправильное имя пользователя или пароль')
         return redirect(url_for('login'))
