@@ -1,86 +1,52 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="p-5 mb-1 bg-info text-white">
-<div class="'row">
+
+<div class="p-5 mb-2">
     <div class="container">
-        <div class="col-8">
-        <h1>Upload new File
-        {{ title }}
-        </h1>
-        <form method=post enctype=multipart/form-data>
-            <input type=file name=file>
-            <input type=submit value=Upload>
-        </form>
-        </div>
-    </div>
-</div>
-</div>
-<div class="p-5 mb-1 bg-info text-white">
-<div class="'row">
-    <div class="container">
-        <div class="col-8">
-                <h1>Файлы</h1>
-                {% for files in files_list %}
-                <b>{{ files.file_name }}{{ files.uploaded }}</b>
-                <p>{{ files.uploaded.strftime('%B %d, %Y') }}</p>
-                <hr />
-                {% endfor %}
-        </div>
-    </div>
-</div>
-</div>
+        <div class="row">
+            <div class="col-4">
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-
-    </div>
-    <div class="col-sm">
-        {% for files in files_list %}
-     <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="/mediafiles/{{ files.file_name }}" alt= {{ files.file_name }}>
-  <div class="card-body">
-    <p class="card-text"> {{ files.uploaded.strftime('%B %d, %Y') }}</p>
-  </div>
-
-    </div>
-        {% endfor %}
-        <br>
-    </div>
-    <div class="col-sm">
-
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="container">
-
-          <div class="row">
-          {% for files in files_list %}
-
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="/mediafiles/{{ files.file_name }}" style="height: 225px; width: 100%; display: block;" src="/mediafiles/{{ files.file_name }}" alt= {{ files.file_name }} data-holder-rendered="true">
-                <div class="card-body">
-                  <p class="card-text">{{ files.uploaded.strftime('%B %d, %Y') }}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
             </div>
-          {% endfor %}
+            <div class="col-5">
+                <h2>Привет Исследователь!</h2>
+            </div>
+            <div class="col">
 
-          </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="container mb-3">
+    <div class="row justify-content-around">
+        <div class="col-5">
+            <div class="col p-5 mb-1 bg-secondary">
+                <h4>Если ты с нами в первый раз:</h4><br>
+                <a class="btn btn-info btn-block" href="{{ url_for('registr') }}" role="button">
+                    Регистрация
+                </a>
+                </form>
+            </div>
+            <div class="col p-5 mb-1 bg-secondary">
+                <h4>Если мы уже знакомы:</h4><br>
+                <a class="btn btn-info btn-block" href="{{ url_for('login') }}" role="button">
+                    Авторизация
+                </a>
+            </div>
+        </div>
+        <div class="col-5 p-5 mb-1 bg-secondary">
+            Немного о программе PhaseCatcher:<br>
+            <ul><li>мы</li></ul>
+            <ol><li>что-то</li></ol>
+            <dl>умеем</dl>
+            <ul><li>делать</li></ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="p-4 bg-secondary text-white fixed-bottom"></div>
 
 
 {% endblock %}

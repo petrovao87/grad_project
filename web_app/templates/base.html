@@ -10,16 +10,34 @@
 
     <title>Hello, world!</title>
   </head>
+
   <body style="background-color:#D2F3FC;">
 
-
+<div class="p-2 mb-1 bg-info text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <a class="btn btn-outline-light" href="{{ url_for('index') }}" role="button">
+                    <h1>PhaseCatcher</h1>
+                </a>
+            </div>
+            <div class="col">
+                EMPTY
+            </div>
+            <div class="col text-center">
+                <a class="btn btn-outline-light" href="{{ url_for('logout') }}" role="button">
+                USER {{ form.username.ladel }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
    {% block body %}
 
     {% endblock %}
 
 
-   <div class="p-5 mb-2 bg-secondary text-white"></div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

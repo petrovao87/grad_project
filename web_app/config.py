@@ -8,4 +8,4 @@ UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
 
 print(UPLOAD_FOLDER)
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
+SECRET_KEY = "asdasfasfafafasfasf"
