@@ -4,6 +4,7 @@ from web_app.model import db, FileDB, User
 from web_app.forms import LoginForm, RegistrForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
+from datetime import datetime
 
 
 def create_app():
@@ -16,13 +17,16 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
+    #login_manager.login_view = 'registr'
 
     @app.route('/', methods=['GET', 'POST'])
     def index():
         title = 'TEST'
         upload_file()
         files_list = FileDB.query.order_by(FileDB.uploaded.desc()).all()
-        return render_template('index.html', files_list=files_list)
+        login_form = LoginForm()
+        time = datetime.now()
+        return render_template('index.html', files_list=files_list, form=login_form, time=time)
 
     @app.route('/mediafiles/<filename>')
     def uploaded_file(filename):
@@ -38,7 +42,8 @@ def create_app():
             return redirect(url_for('index'))
         title = 'Авторизация'
         login_form = LoginForm()
-        return render_template('login.html', page_title=title, form=login_form)
+        time = datetime.now()
+        return render_template('login.html', page_title=title, form=login_form, time=time)
 
     @app.route('/process-login', methods=['POST'])
     def process_login():
@@ -65,7 +70,8 @@ def create_app():
 
         title = 'Регистрация'
         registr_form = RegistrForm()
-        return render_template('registr.html', page_title=title, form=registr_form)
+        time = datetime.now()
+        return render_template('registr.html', page_title=title, form=registr_form, time=time)
 
     @app.route('/process-registr', methods=['POST'])
     def process_registr():

@@ -26,7 +26,9 @@
             </div>
             <div class="col text-center">
                 <a class="btn btn-outline-light" href="{{ url_for('logout') }}" role="button">
-                USER {{ form.username.ladel }}
+                    {{ form.username.data }}
+                    {{ time.strftime('%B %d, %Y') }}
+
                 </a>
             </div>
         </div>
