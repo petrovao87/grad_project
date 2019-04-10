@@ -25,11 +25,18 @@
                 EMPTY
             </div>
             <div class="col text-center">
-                <a class="btn btn-outline-light" href="{{ url_for('logout') }}" role="button">
-                    {{ form.username.data }}
+                {% if current_user.is_authenticated %}
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ current_user.username }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="logout">Logout</a>
+                    </div>
+                    {% else %}
                     {{ time.strftime('%B %d, %Y') }}
-
-                </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

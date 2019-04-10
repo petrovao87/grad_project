@@ -37,9 +37,12 @@ def create_app():
 
     @app.route('/start')
     def start_func():
-        login_form = LoginForm()
-        time = datetime.now()
-        return render_template('start_work.html', form=login_form, time=time)
+        if current_user.is_authenticated:
+            login_form = LoginForm()
+            time = datetime.now()
+            return render_template('start_work.html', form=login_form, time=time)
+        else:
+            return redirect(url_for('index'))
 
     @app.route('/login')
     def login():
@@ -102,6 +105,17 @@ def create_app():
             return redirect(url_for('login'))
         return redirect(url_for('login'))
 
+    @app.route('/analise', methods=['GET', 'POST'])
+    def analise():
+        if current_user.is_authenticated:
+            title = 'TEST'
+            upload_file()
+            files_list = FileDB.query.order_by(FileDB.uploaded.desc()).all()
+            return render_template('analise.html', files_list=files_list, title=title)
+        else:
+            return redirect(url_for('index'))
+
+
     @app.route('/admin')
     @login_required
     def admin_index():
@@ -111,6 +125,3 @@ def create_app():
             return 'Ты не админ'
 
     return app
-
-#if __name__ == '__main__':
-#    app.run(debug=True)

@@ -10,7 +10,7 @@
             </div>
             <div class="col-5 text-center">
                 <h3>
-                    USER {{ form.username.label }} приступим к работе!<br>
+                    {{ current_user.username }}, приступим к работе!<br>
                     Что будем исследовать сегодня?
                 </h3>
             </div>
@@ -28,9 +28,9 @@
         </div>
         <div class="col-5 p-5 mb-1 bg-secondary text-center text-white">
             Анализ изображений<br><br>
-            <button type="button" class="btn btn-info btn-block">
+            <a class="btn btn-info btn-block" href="{{ url_for('analise') }}" role="button">
                 Начать
-            </button>
+            </a>
         </div>
         <div class="col-3 p-5 mb-1">
 
