@@ -36,7 +36,7 @@ def create_app():
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
     @app.route('/start')
-    def start_func():
+    def start():
         if current_user.is_authenticated:
             login_form = LoginForm()
             time = datetime.now()
@@ -62,7 +62,7 @@ def create_app():
             if user and user.check_password(form.password.data):
                 login_user(user)
                 flash('Вы вошли на сайт')
-                return redirect(url_for('start_func'))
+                return redirect(url_for('start'))
 
         flash('Неправильное имя пользователя или пароль')
         return redirect(url_for('login'))
