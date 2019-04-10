@@ -14,3 +14,7 @@ class RegistrForm(FlaskForm):
     password1 = PasswordField('Пароль', validators=[DataRequired()], render_kw={'class': 'form-control'})
     password2 = PasswordField('Повторите пароль', validators=[DataRequired()], render_kw={'class': 'form-control'})
     submit = SubmitField('Отправить', render_kw={'class': 'btn btn-info'})
+
+class DownloadForm(FlaskForm):
+    submit = SubmitField('Отправить', render_kw={'class': 'btn btn-info'})
+    choice = SubmitField('Выберите', render_kw={'class': 'btn btn-info'})

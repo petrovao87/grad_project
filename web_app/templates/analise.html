@@ -1,27 +1,38 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="p-5 mb-1 bg-info text-white">
+<div class="p-5 mb-1">
     <div class="container">
-        <div class="col">
-            <h1>Upload new File
-            {{ title }}
-            </h1>
+
+<div class="row">
+  <div class="col">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <h5 class="card-title">Загрузить новый файл</h5>
+        <p class="card-text">
             <form method=post enctype=multipart/form-data>
                 <input type=file name=file>
                 <input type=submit value=Upload>
-            </form>
-        </div>
-        <div class="col-2">
-            <h1>Файлы</h1>
+            </form></p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <h5 class="card-title">Загруженные файлы</h5>
+        <p class="card-text">
             {% for files in files_list %}
             <ul><li>
                 <b>{{ files.file_name }}</b>
                 <p>{{ files.uploaded.strftime('%B %d, %Y') }}</p>
             </li></ul>
             <hr />
-            {% endfor %}
-        </div>
+            {% endfor %}</p>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
 </div>
 
@@ -75,6 +86,31 @@
 
           </div>
 </div>
+<div class="container">
+    <div class="col-md-4">
 
+    </div>
+    <div class="col-md-4">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for files in files_list %}
+                <div class="carousel-item {% if loop.first %} active {% endif %}">
+                    <img width="450px" height="220px" src="/mediafiles/{{ files.file_name }}" class="d-block w-100" alt= {{ files.file_name }}>
+                </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
 
+    </div>
+</div>
 {% endblock %}

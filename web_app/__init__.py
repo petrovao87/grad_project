@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
 from web_app.model import db, FileDB, User
-from web_app.forms import LoginForm, RegistrForm
+from web_app.forms import LoginForm, RegistrForm, DownloadForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
@@ -110,8 +110,9 @@ def create_app():
         if current_user.is_authenticated:
             title = 'TEST'
             upload_file()
+            form = DownloadForm
             files_list = FileDB.query.order_by(FileDB.uploaded.desc()).all()
-            return render_template('analise.html', files_list=files_list, title=title)
+            return render_template('analise.html', form=form, files_list=files_list, title=title)
         else:
             return redirect(url_for('index'))
 
