@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block body %}
+
+<form  enctype=multipart/form-data method="POST">
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
@@ -37,21 +39,13 @@
                     {% endif %}
                 {% endwith %}
 
-
-            <form method=post enctype=multipart/form-data>
-                <input type=file name=file>
-                <input type=submit value=Upload>
-            </form>
-
             <div class="form-group">
-            <form  enctype=multipart/form-data method="POST">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {{ form.upload.label }}
                     {{ form.upload() }}
                 </div>
                 {{ form.submit_upload() }}
-            </form>
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -71,7 +65,7 @@
         </div>
     </div>
 </div>
-
+s</form>
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">

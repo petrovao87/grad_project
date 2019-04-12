@@ -30,7 +30,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def upload_file(id):
+def upload_file(user_id, form):
     print('UPLOAD!!!', file=sys.stdout)
     if request.method == 'POST':
         print('POST!!!', file=sys.stdout)
@@ -38,10 +38,10 @@ def upload_file(id):
         print('POST!!!', file=sys.stdout)
         x = request.files
         print(x, file=sys.stdout)
-        if 'file' not in request.files:
+        if 'upload' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        file = request.files['file']
+        file = request.files['upload']
         print(file, file=sys.stdout)
         print('FILE!!!', file=sys.stdout)
         # if user does not select file, browser also
@@ -56,24 +56,25 @@ def upload_file(id):
             uploaded = datetime.now()
             print(uploaded, file=sys.stdout)
             print(filename, file=sys.stdout)
-            save_file(filename, uploaded, id)
+            save_file(filename, form, user_id)
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
             return redirect(url_for('uploaded_file', filename=filename))
 
 
-def save_file(file_name, uploaded, user_id):
-    print('!!!!!', file=sys.stderr)
+def save_file(file_name, form, user_id):
+    uploaded = datetime.now()
     file_exists = Files.query.filter(Files.file_name == file_name).count()
-    print(file_exists, file=sys.stderr)
-    form = DownloadForm()
+    print(form)
+    print('.sample_name.data', form.alloy_name.data)
+    print('sample name', form.sample_name.data)
 
     if not file_exists:
         file_2_db = Files(file_name=file_name, sample_name=form.sample_name.data, alloy_name=form.alloy_name.data,
                           comment=form.comment.data, uploaded=uploaded, user_id=user_id)
-        print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)
+        print('@'*11, file=sys.stderr)
         db.session.add(file_2_db)
-        print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)
+        print('@'*11, file=sys.stderr)
         db.session.commit( )
     else:
         pass
