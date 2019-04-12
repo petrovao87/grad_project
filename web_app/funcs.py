@@ -5,6 +5,7 @@ import sys
 from datetime import datetime
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from werkzeug.utils import secure_filename
+from web_app.forms import DownloadForm
 
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -29,12 +30,14 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def upload_file():
+def upload_file(id):
     print('UPLOAD!!!', file=sys.stdout)
     if request.method == 'POST':
         print('POST!!!', file=sys.stdout)
         # check if the post request has the file part
         print('POST!!!', file=sys.stdout)
+        x = request.files
+        print(x, file=sys.stdout)
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
@@ -53,18 +56,21 @@ def upload_file():
             uploaded = datetime.now()
             print(uploaded, file=sys.stdout)
             print(filename, file=sys.stdout)
-            save_file(filename, uploaded)
+            save_file(filename, uploaded, id)
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
             return redirect(url_for('uploaded_file', filename=filename))
 
 
-def save_file(file_name, uploaded):
+def save_file(file_name, uploaded, user_id):
     print('!!!!!', file=sys.stderr)
     file_exists = Files.query.filter(Files.file_name == file_name).count()
     print(file_exists, file=sys.stderr)
+    form = DownloadForm()
+
     if not file_exists:
-        file_2_db = Files(file_name=file_name, uploaded=uploaded)
+        file_2_db = Files(file_name=file_name, sample_name=form.sample_name.data, alloy_name=form.alloy_name.data,
+                          comment=form.comment.data, uploaded=uploaded, user_id=user_id)
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)
         db.session.add(file_2_db)
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)

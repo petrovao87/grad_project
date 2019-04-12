@@ -109,8 +109,11 @@ def create_app():
     def analise():
         if current_user.is_authenticated:
             title = 'TEST'
-            upload_file()
             form = DownloadForm()
+            print(current_user.username)
+            user_id = User.query.filter(User.username == current_user.username).first()
+            print(user_id.id)
+            upload_file(user_id.id)
             files_list = Files.query.order_by(Files.uploaded.desc()).all()
             return render_template('analise.html', form=form, files_list=files_list, title=title)
         else:
