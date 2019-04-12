@@ -1,116 +1,101 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="p-5 mb-1">
-    <div class="container">
-
-<div class="row">
-  <div class="col">
-    <div class="card text-white bg-info">
-      <div class="card-body">
-        <h5 class="card-title">Загрузить новый файл</h5>
-        <p class="card-text">
-            <form method=post enctype=multipart/form-data>
-                <input type=file name=file>
-                <input type=submit value=Upload>
-            </form></p>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card text-white bg-info">
-      <div class="card-body">
-        <h5 class="card-title">Загруженные файлы</h5>
-        <p class="card-text">
-            {% for files in files_list %}
-            <ul><li>
-                <b>{{ files.file_name }}</b>
-                <p>{{ files.uploaded.strftime('%B %d, %Y') }}</p>
-            </li></ul>
-            <hr />
-            {% endfor %}</p>
-      </div>
-    </div>
-  </div>
-</div>
-    </div>
-</div>
-
 <div class="container">
-  <div class="row">
-    <div class="col-sm">
-
-    </div>
-    <div class="col-sm">
-        {% for files in files_list %}
-     <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="/mediafiles/{{ files.file_name }}" alt= {{ files.file_name }}>
-  <div class="card-body">
-    <p class="card-text"> {{ files.uploaded.strftime('%B %d, %Y') }}</p>
-  </div>
-
-    </div>
-        {% endfor %}
-        <br>
-    </div>
-    <div class="col-sm">
-
-    </div>
-  </div>
-</div>
-
-
-
-
-<div class="container">
-
-          <div class="row">
-          {% for files in files_list %}
-
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="/mediafiles/{{ files.file_name }}" style="height: 225px; width: 100%; display: block;" src="/mediafiles/{{ files.file_name }}" alt= {{ files.file_name }} data-holder-rendered="true">
-                <div class="card-body">
-                  <p class="card-text">{{ files.uploaded.strftime('%B %d, %Y') }}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
+    <div class="row">
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                {{ form.sample_name.label }}
+                {{ form.sample_name() }}
             </div>
-          {% endfor %}
-
-          </div>
-</div>
-<div class="container">
-    <div class="col-md-4">
-
-    </div>
-    <div class="col-md-4">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for files in files_list %}
-                <div class="carousel-item {% if loop.first %} active {% endif %}">
-                    <img width="450px" height="220px" src="/mediafiles/{{ files.file_name }}" class="d-block w-100" alt= {{ files.file_name }}>
-                </div>
-                {% endfor %}
+        </div>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                {{ form.alloy_name.label }}
+                {{ form.alloy_name() }}
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+        </div>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                {{ form.comment.label }}
+                {{ form.comment() }}
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
+</div>
 
+<div class="container">
+    <div class="row">
+        <div class="col mb-1 bg-secondary text-white">
+            {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
+            <div class="form-group">
+            <form  enctype=multipart/form-data method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.upload.label }}
+                    {{ form.upload() }}
+                </div>
+                {{ form.submit_upload() }}
+            </form>
+            </div>
+        </div>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                ИЗОБРАЖЕНИЕ
+            </div>
+        </div>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                {{ form.image_scale.label }}
+                {{ form.image_scale() }}
+                {{ form.image_wb.label }}
+                {{ form.image_wb() }}
+                {{ form.particle.label }}
+                {{ form.particle() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                КНОПКА<br>
+                <div class="row">
+                <div class="col">
+                    Средний размер, нм {{ average_size }}
+                    Отклонение, нм
+                    Усредненный параметр формы, P/Sqrt
+                    Количество частиц
+                </div>
+                <div class="col">
+                    average_size{{ average_size }}
+                    deviation_size{{ deviation_size }}
+                    shape_parametr{{ shape_parametr }}
+                    particles_number{{ particles_number }}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mb-1 bg-secondary text-white">
+            <div class="form-group">
+                ГИСТОГРАММА
+            </div>
+        </div>
+        <div class="col-4 mb-1 bg-secondary text-white">
+            <div class="form-group">
+                ГИСТОГРАММА
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

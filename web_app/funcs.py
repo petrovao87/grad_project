@@ -1,5 +1,5 @@
 import requests
-from web_app.model import db, FileDB
+from web_app.model import db, Files
 import os
 import sys
 from datetime import datetime
@@ -22,7 +22,7 @@ def get_html(url):
         print('Сетевая ошибка')
         return False
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'bmp', 'jpg', 'jpeg', 'gif'])
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -34,6 +34,7 @@ def upload_file():
     if request.method == 'POST':
         print('POST!!!', file=sys.stdout)
         # check if the post request has the file part
+        print('POST!!!', file=sys.stdout)
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
@@ -60,10 +61,10 @@ def upload_file():
 
 def save_file(file_name, uploaded):
     print('!!!!!', file=sys.stderr)
-    file_exists = FileDB.query.filter(FileDB.file_name == file_name).count()
+    file_exists = Files.query.filter(Files.file_name == file_name).count()
     print(file_exists, file=sys.stderr)
     if not file_exists:
-        file_2_db = FileDB(file_name=file_name, uploaded=uploaded)
+        file_2_db = Files(file_name=file_name, uploaded=uploaded)
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)
         db.session.add(file_2_db)
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@', file=sys.stderr)
@@ -74,7 +75,7 @@ def save_file(file_name, uploaded):
 
 def all_files(files):
     print('!!!!!', file=sys.stderr)
-    files = FileDB.query.all()
+    files = Files.query.all()
     print(files, file=sys.stderr)
     if not files:
         return('В базе нет файлов')

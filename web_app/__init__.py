@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
-from web_app.model import db, FileDB, User
+from web_app.model import db, Files, User
 from web_app.forms import LoginForm, RegistrForm, DownloadForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
@@ -26,7 +26,7 @@ def create_app():
     def index():
         title = 'TEST'
         upload_file()
-        files_list = FileDB.query.order_by(FileDB.uploaded.desc()).all()
+        files_list = Files.query.order_by(Files.uploaded.desc()).all()
         login_form = LoginForm()
         time = datetime.now()
         return render_template('index.html', files_list=files_list, form=login_form, time=time)
@@ -93,7 +93,7 @@ def create_app():
                     flash('Пароли не совпадают')
                     return redirect(url_for('registr'))
 
-                new_user = User(username=form.username.data, role='admin')
+                new_user = User(username=form.username.data,)
                 new_user.set_password(form.password1.data)
 
                 db.session.add(new_user)
@@ -110,11 +110,12 @@ def create_app():
         if current_user.is_authenticated:
             title = 'TEST'
             upload_file()
-            form = DownloadForm
-            files_list = FileDB.query.order_by(FileDB.uploaded.desc()).all()
+            form = DownloadForm()
+            files_list = Files.query.order_by(Files.uploaded.desc()).all()
             return render_template('analise.html', form=form, files_list=files_list, title=title)
         else:
             return redirect(url_for('index'))
+
 
 
     @app.route('/admin')
