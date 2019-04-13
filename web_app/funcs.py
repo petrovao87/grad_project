@@ -12,8 +12,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
 
 
-
-
 def get_html(url):
     try:
         result = requests.get(url)
@@ -51,7 +49,6 @@ def upload_file(user_id, form):
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             uploaded = datetime.now()
             print(uploaded, file=sys.stdout)
@@ -60,7 +57,8 @@ def upload_file(user_id, form):
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
             return filename
-
+def treatment_image():
+    
 
 def save_file(file_name, form, user_id):
     uploaded = datetime.now()

@@ -20,7 +20,6 @@ class DownloadForm(FlaskForm):
     sample_name = StringField('Название образца', validators=[DataRequired()], render_kw={'class': 'form-control'})
     alloy_name = StringField('Название сплава', validators=[DataRequired()], render_kw={'class': 'form-control'})
     comment = StringField('Описание образца', validators=[DataRequired()], render_kw={'class': 'form-control'})
-
     upload = FileField('Загрузка изображения')
     submit_upload = SubmitField('Загрузить', render_kw={'class': 'btn btn-info'})
 
