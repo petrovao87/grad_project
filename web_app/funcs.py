@@ -59,7 +59,7 @@ def upload_file(user_id, form):
             save_file(filename, form, user_id)
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
-            return redirect(url_for('uploaded_file', filename=filename))
+            return filename
 
 
 def save_file(file_name, form, user_id):
@@ -89,12 +89,12 @@ def all_files(files):
 
 
 
-if __name__ == '__main__':
-    #html = get_html('https://www.python.org/blogs/')
-    #if html:
-        #with open('python.org.html', 'w', encoding='utf8') as f:
-        #    f.write(html)
-    #    news = get_python_news(html)
-        print(news)
+# if __name__ == '__main__':
+#     #html = get_html('https://www.python.org/blogs/')
+#     #if html:
+#         #with open('python.org.html', 'w', encoding='utf8') as f:
+#         #    f.write(html)
+#     #    news = get_python_news(html)
+#         print(news)
 
 

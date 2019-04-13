@@ -25,7 +25,6 @@ def create_app():
     @app.route('/', methods=['GET', 'POST'])
     def index():
         title = 'TEST'
-        upload_file()
         files_list = Files.query.order_by(Files.uploaded.desc()).all()
         login_form = LoginForm()
         time = datetime.now()
@@ -88,7 +87,7 @@ def create_app():
         if form.validate_on_submit():
             print(User.query.filter(User.username == form.username.data).count())
             if not User.query.filter(User.username == form.username.data).count():
-            #user = User.query.filter(User.username == form.username.data).first()
+                user = User.query.filter(User.username == form.username.data).first()
                 if not form.password1.data == form.password2.data:
                     flash('Пароли не совпадают')
                     return redirect(url_for('registr'))
@@ -107,14 +106,15 @@ def create_app():
 
     @app.route('/analise', methods=['GET', 'POST'])
     def analise():
+        filename = None
         if current_user.is_authenticated:
             title = 'TEST'
             form = DownloadForm()
             print(current_user.id)
-            # user_id = User.query.filter(User.username == current_user.username).first()
-            upload_file(current_user.id, form)
+            user_id = User.query.filter(User.username == current_user.username).first()
+            filename = upload_file(current_user.id, form)
             files_list = Files.query.order_by(Files.uploaded.desc()).all()
-            return render_template('analise.html', form=form, files_list=files_list, title=title)
+            return render_template('analise.html', form=form, files_list=files_list, filename=filename, title=title)
         else:
             return redirect(url_for('index'))
 
