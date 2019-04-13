@@ -29,3 +29,11 @@ class DownloadForm(FlaskForm):
     particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
     submit = SubmitField('Начать анализ', render_kw={'class': 'btn btn-info'})
+
+
+class ProjectsForm(FlaskForm):
+    use_all_experiments = SubmitField('Открыть все', render_kw={'class': 'btn btn-info'})
+
+    use_experiment = SubmitField('Открыть', render_kw={'class': 'btn btn-info'})
+
+
