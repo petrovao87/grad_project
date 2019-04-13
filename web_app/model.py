@@ -44,6 +44,7 @@ class Experiment(db.Model):
     image_scale = db.Column(db.Integer, nullable=False)
     image_wb = db.Column(db.Integer, nullable=False)
     image_cont = db.Column(db.Integer, nullable=False)
+    experiment_time = db.Column(db.DateTime, nullable=False)
 
     file_id = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
 

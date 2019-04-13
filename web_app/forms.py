@@ -34,3 +34,11 @@ class DownloadForm(FlaskForm):
     deviation_size = FloatField('Отклонение, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
     shape_parametr = FloatField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
     particles_number = IntegerField('Количество частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
+
+
+class ProjectsForm(FlaskForm):
+    use_all_experiments = SubmitField('Открыть все', render_kw={'class': 'btn btn-info'})
+
+    use_experiment = SubmitField('Открыть', render_kw={'class': 'btn btn-info'})
+
+

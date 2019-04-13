@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
-from web_app.model import db, Files, User
-from web_app.forms import LoginForm, RegistrForm, DownloadForm
+from web_app.model import db, Files, User, Experiment
+from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
@@ -119,13 +119,21 @@ def create_app():
             return redirect(url_for('index'))
 
 
-
-    @app.route('/admin')
-    @login_required
-    def admin_index():
-        if current_user.is_admin:
-            return 'Привет админ'
+    @app.route('/projects', methods=['GET', 'POST'])
+    def projects():
+        if current_user.is_authenticated:
+            title = 'TEST'
+            form = ProjectsForm()
+            print(current_user.id)
+            experiment_time = datetime.now()
+            #db_data = Experiment(name='exp', image_scale='1', image_wb='2', image_cont='3', experiment_time=experiment_time, file_id='1')
+            files_list = Experiment.query.order_by(Experiment.experiment_time.desc()).all()
+            #db.session.add(db_data)
+            #db.session.commit()
+            return render_template('projects.html', form=form, files_list=files_list, title=title)
         else:
-            return 'Ты не админ'
+            return redirect(url_for('index'))
+
+
 
     return app
