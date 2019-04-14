@@ -5,17 +5,11 @@
 <div class="p-5 mb-2">
     <div class="container">
         <div class="row">
-            <div class="col">
-
-            </div>
-            <div class="col-5 text-center">
+            <div class="col text-center">
                 <h3>
                     {{ current_user.username }}, приступим к работе!<br>
-                    Что будем исследовать сегодня?
+                    Что будем делать сегодня?
                 </h3>
-            </div>
-            <div class="col">
-
             </div>
         </div>
     </div>
@@ -23,40 +17,21 @@
 
 <div class="container mb-3">
     <div class="row justify-content-around">
-        <div class="col-3 p-5 mb-1">
-
-        </div>
         <div class="col-5 p-5 mb-1 bg-secondary text-center text-white">
-            Анализ изображений<br><br>
+            <h4> Исследовать новое изображение</h4><br>
             <a class="btn btn-info btn-block" href="{{ url_for('analise') }}" role="button">
                 Начать
             </a>
         </div>
-        <div class="col-3 p-5 mb-1">
-
-        </div>
-    </div>
-</div>
-
-<div class="container mb-3">
-    <div class="row justify-content-around">
-        <div class="col-3 p-5 mb-1">
-
-        </div>
         <div class="col-5 p-5 mb-1 bg-secondary text-center text-white">
-            Просмотр существующий данных<br><br>
+            <h4>Просмотр существующий данных</h4><br>
             <a class="btn btn-info btn-block" href="{{ url_for('projects') }}" role="button">
                 Начать
             </a>
         </div>
-        <div class="col-3 p-5 mb-1">
 
-        </div>
     </div>
 </div>
-
-
-<div class="p-4 bg-secondary text-white fixed-bottom"></div>
 
 
 {% endblock %}

@@ -2,22 +2,23 @@
 
 {% block body %}
 
+
 <form  enctype=multipart/form-data method="POST">
 <div class="container">
     <div class="row">
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.sample_name.label }}
                 {{ form.sample_name() }}
             </div>
         </div>
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.alloy_name.label }}
                 {{ form.alloy_name() }}
             </div>
         </div>
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-6 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.comment.label }}
                 {{ form.comment() }}
@@ -29,7 +30,7 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-            {% with messages = get_flashed_messages() %}
+            <!-- {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <div class="alert alert-warning" role="alert">
                         {% for message in messages %}
@@ -37,7 +38,7 @@
                         {% endfor %}
                     </div>
                     {% endif %}
-                {% endwith %}
+                {% endwith %} -->
                 <!-- <div class="custom-file">
                         <input type="file" class="custom-file-input" id="customFile">
                         <label class="custom-file-label" for="customFile">Choose file</label>
@@ -49,8 +50,8 @@
             <div class="form-group">
                  <div class="row">
                     <div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                        </div>
+                        <!-- <div class="card mb-4 box-shadow">
+                        </div> -->
                      </div>
                  </div>
                    
@@ -73,19 +74,7 @@
         </div>
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group">
-                
-                     <!-- <div class="dropdown">
-                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ form.image_scale.label }}  
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#">x10000</a>
-                              <a class="dropdown-item" href="#">x20000</a>
-                              <a class="dropdown-item" href="#">x30000</a>
-                              <a class="dropdown-item" href="#">x40000</a>
-                              <a class="dropdown-item" href="#">x50000</a>
-                            </div>
-                          </div>  -->
+
                           Увеличение при съемке
                           <select class="custom-select custom-select-sm">
                                 <option value="1">x10000</option>
@@ -97,9 +86,35 @@
                 
                 
                 {{ form.image_wb.label }}
-                {{ form.image_wb() }}
-                {{ form.particle.label }}
-                {{ form.particle() }} 
+                
+                    <div class="form-row">
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Min">
+                      </div>
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Max">
+                      </div>
+                      <button type="submit" class="btn btn-info">Ок</button>
+                    </div>
+                  </form>
+
+                  {{ form.particle.label }}
+                  <form>
+                    <div class="form-row">
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Min">
+                      </div>
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Max">
+                      </div>
+                      <button type="submit" class="btn btn-info">Ок</button>
+                    </div>
+                    </form>  
+                    <form>
+                    <button type="submit" class="btn btn-info">Проанализировать</button>
+
+                    </form> 
+
             </div>
         </div>
     </div>
@@ -107,22 +122,26 @@
 
 <div class="container">
     <div class="row">
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-4 mb-1 bg-secondary text-white">
             <div class="form-group">
-                КНОПКА<br>
-                <div class="row">
-                <div class="col">
-                    {{ form.average_size.label }}
-                    Отклонение, нм
-                    Усредненный параметр формы, P/Sqrt
-                    Количество частиц
-                </div>
-                <div class="col">
-                    {{ form.average_size() }}
-                    deviation_size{{ deviation_size }}
-                    shape_parametr{{ shape_parametr }}
-                    particles_number{{ particles_number }}
-                </div>
+                <p class="font-weight-bold" >Результаты:</p>
+                <div class="row ">
+                    <table class="table bg-light table-striped table-bordered text-dark" >
+                        <tbody>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Средний размер, нм</p></th>
+                                <td>100</td>
+                            </tr>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Погрешность, нм</p></th>
+                                <td>100</td>
+                            </tr>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Количество частиц</p></th>
+                                <td>100</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -139,10 +158,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-
-<!-- average_size = FloatField('Средний размер частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
-deviation_size = FloatField('Отклонение', validators=[DataRequired()], render_kw={'class': 'form-control'})
-shape_parametr = FloatField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
-particles_number = IntegerField('Количество частиц', validators=[DataRequired()], render_kw={'class': 'form-control'}) -->
