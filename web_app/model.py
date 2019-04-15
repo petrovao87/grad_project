@@ -36,6 +36,8 @@ class Files(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def __repr__(self):
+        return '<file: {}, uploaded: {}>'.format(self.file_name, self.uploaded)
 
 
 class Experiment(db.Model):
@@ -47,9 +49,20 @@ class Experiment(db.Model):
     experiment_time = db.Column(db.DateTime, nullable=False)
 
     file_id = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
+    result = db.relationship('Result', backref='experimrnt', uselist=False, lazy=True)
 
     def __repr__(self):
         return '<id: {}, name: {}>'.format(self.id, self.name)
 
+
+class Result(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    average_size = db.Column(db.Integer, nullable=False)
+    deviation_size = db.Column(db.Integer, nullable=False)
+    shape_parameter = db.Column(db.Integer, nullable=False)
+    particles_number = db.Column(db.Integer, nullable=False)
+
+    experiment_id = db.Column(db.Integer, db.ForeignKey('experiment.id'), nullable=False)
+
     def __repr__(self):
-        return '<file: {}, uploaded: {}>'.format(self.file_name, self.uploaded)
+        return '<id: {}, name: {}>'.format(self.id, self.average_size)

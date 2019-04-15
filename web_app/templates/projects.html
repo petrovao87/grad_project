@@ -5,7 +5,64 @@
 <form  enctype=multipart/form-data method="POST">
 <div class="container">
     <div class="row">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Название</th>
+                <th scope="col">Увеличение при съемке</th>
+                <th scope="col">Бинаризация</th>
+                <th scope="col">Выбор частиц</th>
+                <th scope="col">Имя файла</th>
+                <th scope="col">Дата/Время</th>
+            </tr>
+            </thead>
+                        {% for experiment in experiment_list %}
+            <tbody>
 
+            <tr>
+
+                <th scope="row">{{ experiment.id }}</th>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        {{ experiment.name }}
+                    </button>
+                    <!-- Modal -->
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">{{ experiment.id }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                                                        {% for join in list_join %}
+                                <div class="modal-body">
+                                    {{ list_join.average_size }}
+                                    {{ join.average_size }}
+
+                                </div>
+                                {% endfor %}
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ experiment.image_scale }}</td>
+                <td>{{ experiment.image_wb }}</td>
+                <td>{{ experiment.image_cont }}</td>
+                <td>{{ experiment.file_id }}</td>
+                <td>{{ experiment.experiment_time.strftime('%B %d, %Y %H:%m')  }}</td>
+            </tr>
+            </tbody>
+                        {% endfor %}
+
+        </table>
     </div>
 </div>
 
@@ -15,54 +72,28 @@
     </div>
 </div>
 </form>
+
 <div class="container">
     <div class="row">
-        <div class="col mb-1 bg-secondary text-white">
-            <h5 class="card-title">Загруженные файлы</h5>
-            <p class="card-text">
-                {% for files in files_list %}
-                <ul><li>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        {{ files.file_name }}<br>
-                        {{ files.experiment_time.strftime('%B %d, %Y') }}
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    ...
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{ files.file_name }}
-            <p>{{ files.experiment_time.strftime('%B %d, %Y') }}</p>
-            </li></ul>
-            <hr />
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col-4 mb-1 bg-secondary text-white">
-        <div class="form-group">
-        </div>
-    </div>
-        <div class="col-4 mb-1 bg-secondary text-white">
-            <div class="form-group">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Средний размер, нм</th>
+                <th scope="col">Отклонение, нм</th>
+                <th scope="col">Усредненный параметр формы, P/Sqrt</th>
+                <th scope="col">Количество частиц</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ average_dict['average_size'] }}</td>
+                <td>{{ average_dict['average_dv'] }}</td>
+                <td>{{ average_dict['average_sp'] }}</td>
+                <td>{{ average_dict['average_pn'] }}</td>
+            </tr>
+            </tbody>
 
-            </div>
-        </div>
+        </table>
     </div>
 </div>
 {% endblock %}

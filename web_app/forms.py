@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField
+from wtforms import StringField, PasswordField, SubmitField, FileField, FloatField, IntegerField
 from wtforms.validators import DataRequired
 
 
@@ -19,7 +19,7 @@ class RegistrForm(FlaskForm):
 class DownloadForm(FlaskForm):
     sample_name = StringField('Название образца', validators=[DataRequired()], render_kw={'class': 'form-control'})
     alloy_name = StringField('Название сплава', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    comment = StringField('Примечание', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    comment = StringField('Описание образца', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
     upload = FileField('Загрузка изображения')
     submit_upload = SubmitField('Загрузить', render_kw={'class': 'btn btn-info'})
@@ -30,10 +30,14 @@ class DownloadForm(FlaskForm):
 
     submit = SubmitField('Начать анализ', render_kw={'class': 'btn btn-info'})
 
+    average_size = StringField('Средний размер частиц, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    deviation_size = StringField('Отклонение, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    shape_parametr = StringField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    particles_number = StringField('Количество частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
+
 
 class ProjectsForm(FlaskForm):
     use_all_experiments = SubmitField('Открыть все', render_kw={'class': 'btn btn-info'})
-
     use_experiment = SubmitField('Открыть', render_kw={'class': 'btn btn-info'})
 
 

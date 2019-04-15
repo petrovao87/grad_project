@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
-from web_app.model import db, Files, User, Experiment
+from web_app.model import db, Files, User, Experiment, Result
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
@@ -125,11 +125,32 @@ def create_app():
             form = ProjectsForm()
             print(current_user.id)
             experiment_time = datetime.now()
-            #db_data = Experiment(name='exp', image_scale='1', image_wb='2', image_cont='3', experiment_time=experiment_time, file_id='1')
-            files_list = Experiment.query.order_by(Experiment.experiment_time.desc()).all()
-            #db.session.add(db_data)
-            #db.session.commit()
-            return render_template('projects.html', form=form, files_list=files_list, title=title)
+            # db_exp = Experiment(name='exp3', image_scale='3', image_wb='3', image_cont='3', experiment_time=experiment_time, file_id='1')
+            # db_result = Result(average_size='3', deviation_size='3', shape_parameter='3', particles_number='3', experiment_id='3')
+            # db.session.add(db_exp)
+            # db.session.add(db_result)
+            # db.session.commit()
+            list_average_size = []
+            list_deviation_size = []
+            list_shape_parameter = []
+            list_particles_number = []
+            experiment_list = Experiment.query.order_by(Experiment.id).all()
+            result_list = Result.query.order_by(Result.id).all()
+            list_join = Experiment.query.join(Result, (Result.experiment_id == Experiment.id)).order_by(Result.id).all()
+            print(list_join, 'result')
+            for result in result_list:
+                list_average_size.append(result.average_size)
+                list_deviation_size.append(result.deviation_size)
+                list_shape_parameter.append(result.shape_parameter)
+                list_particles_number.append(result.particles_number)
+            average_dict = {'average_size': sum(list_average_size)/len(list_average_size),
+                           'average_dv': sum(list_deviation_size)/len(list_deviation_size),
+                           'average_sp': sum(list_shape_parameter)/len(list_shape_parameter),
+                            'average_pn': sum(list_particles_number)/len(list_particles_number)}
+            print(average_dict, 'average')
+
+            return render_template('projects.html', form=form, experiment_list=experiment_list, result_list=result_list,
+                                   title=title, average_dict=average_dict, list_join=list_join)
         else:
             return redirect(url_for('index'))
 
