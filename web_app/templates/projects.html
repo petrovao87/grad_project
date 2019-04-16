@@ -17,51 +17,75 @@
                 <th scope="col">Дата/Время</th>
             </tr>
             </thead>
-                        {% for experiment in experiment_list %}
+
+            {% for list in list_join %}
+
             <tbody>
-
             <tr>
-
-                <th scope="row">{{ experiment.id }}</th>
+                <th scope="row">{{ list.id }}</th>
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        {{ experiment.name }}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong{{ list.id }}">
+                        {{ list.name }}
                     </button>
                     <!-- Modal -->
-
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModalLong{{ list.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">{{ experiment.id }}</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">{{ list.files.file_name }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                                                        {% for join in list_join %}
                                 <div class="modal-body">
-                                    {{ list_join.average_size }}
-                                    {{ join.average_size }}
+                                    <div class="card" style="width: 18rem;">
+                                        <img class="card-img-top" src="/mediafiles/{{ list.files.file_name }}" alt= {{ list.files.file_name }}>
+                                        <div class="card-body">
+                                            <p class="card-text"> {{ list.comment }}</p>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
 
-                                </div>
-                                {% endfor %}
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row">Средний размер, нм</th>
+                                            <td>{{ list.average_size }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Отклонение, нм</th>
+                                            <td>{{ list.deviation_size }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Усредненный параметр формы, P/Sqrt</th>
+                                            <td>{{ list.shape_parameter }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Количество частиц</th>
+                                            <td>{{ list.particles_number }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </td>
-                <td>{{ experiment.image_scale }}</td>
-                <td>{{ experiment.image_wb }}</td>
-                <td>{{ experiment.image_cont }}</td>
-                <td>{{ experiment.file_id }}</td>
-                <td>{{ experiment.experiment_time.strftime('%B %d, %Y %H:%m')  }}</td>
+                <td>{{ list.image_scale }}</td>
+                <td>{{ list.image_wb }}</td>
+                <td>{{ list.image_cont }}</td>
+                <td>{{ list.file_id }}</td>
+                <td>{{ list.experiment_time.strftime('%B %d, %Y %H:%m')  }}</td>
             </tr>
             </tbody>
-                        {% endfor %}
-
+            {% endfor %}
         </table>
     </div>
 </div>
