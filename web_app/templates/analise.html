@@ -30,44 +30,23 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-            <!-- {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <div class="alert alert-warning" role="alert">
-                        {% for message in messages %}
-                            {{ message }}<br>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                {% endwith %} -->
-                <!-- <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                      </div> -->
-             
                 <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image"> 
             <div class="form-group">
                  <div class="row">
                     <div class="col-md-4">
-                        <!-- <div class="card mb-4 box-shadow">
-                        </div> -->
                      </div>
                  </div>
-                   
-                    <!-- {{ form.hidden_tag() }} -->
                     <div class="form-group">
-                    <!-- {{ form.upload.label }}
-                    {{ form.upload() }} -->
                     </div>
                 {{ form.submit_upload() }}
             </div>
         </div>
     </form>
 
-
-
         <div class="col mb-1 bg-secondary text-white">
-            <div class="form-group">
-                ИЗОБРАЖЕНИЕ
+            <div class="form-group"> 
+                <form enctype="multipart/form-data" method="post">
+                <img src="/get-files/{{ filename }}" upload class="img-fluid" alt="Responsive image"> </form>
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">

@@ -2,9 +2,11 @@ from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
 from web_app.model import db, Files, User, Experiment
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
+from PIL import Image
+import os
 
 
 def create_app():
@@ -114,21 +116,54 @@ def create_app():
 
     @app.route('/analise', methods=['GET', 'POST'])
     def analise():
+        # 
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
         filename = None
+        image_original = None
+        image_cut = None
+        area = (0, 0, 1600, 1115)
         if current_user.is_authenticated:
-            
             title = 'TEST'
             form = DownloadForm()
             print(current_user.id)
             if request.method == 'POST':
                 user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id, form)
+                image_original = Image.open(upload_file) 
+                image_resize = image_original.resize((1600, 1200)) 
+                image_cut = image_resize.crop(area)
             else:
+                
                 filename = request.args.get('file')
-            return render_template('analise.html', form=form, filename=filename, title=title)
+                # file.save(os.path.join(UPLOAD_FOLDER, filename))
+                # filename = upload_file(current_user.id, form) 
+                print(os.path.join(UPLOAD_FOLDER, filename))
+                filename_server = os.path.join(UPLOAD_FOLDER, filename)
+                image_original = Image.open(filename_server) 
+                image_resize = image_original.resize((1600, 1200)) 
+                image_cut = image_resize.crop(area)
+                image_cut.save(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), 'JPEG')
+                image_cut = 'crop_'+filename
+ 
+            return render_template('analise.html', form=form, filename=filename, image_original=image_original, 
+                                    image_cut=image_cut, title=title)
        
         else:
             return redirect(url_for('index'))
+
+    @app.route('/get-files/<filename>')
+    def crop_file(filename):
+        area = (0, 0, 1600, 1115)
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
+        filename_server = os.path.join(UPLOAD_FOLDER, filename)
+        image_original = Image.open(filename_server) 
+        image_resize = image_original.resize((1600, 1200)) 
+        image_cut = image_resize.crop(area)
+        image_cut.save(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), 'JPEG')
+        image_cut = 'crop_'+filename
+        return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
 
     
 
