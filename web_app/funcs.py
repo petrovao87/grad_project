@@ -7,11 +7,12 @@ from flask import Flask, flash, request, redirect, url_for, send_from_directory,
 from werkzeug.utils import secure_filename
 from web_app.forms import DownloadForm
 
+
+
+
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
-
-
 
 
 def get_html(url):
@@ -31,19 +32,17 @@ def allowed_file(filename):
 
 
 def upload_file(user_id, form):
-    print('UPLOAD!!!', file=sys.stdout)
+    # print('UPLOAD!!!', file=sys.stdout)
     if request.method == 'POST':
-        print('POST!!!', file=sys.stdout)
-        # check if the post request has the file part
-        print('POST!!!', file=sys.stdout)
+        # print('POST!!!', file=sys.stdout)
         x = request.files
-        print(x, file=sys.stdout)
+        # print(x, file=sys.stdout)
         if 'upload' not in request.files:
             flash('No file part')
             return redirect(request.url)
         file = request.files['upload']
-        print(file, file=sys.stdout)
-        print('FILE!!!', file=sys.stdout)
+        # print(file, file=sys.stdout)
+        # print('FILE!!!', file=sys.stdout)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -59,7 +58,8 @@ def upload_file(user_id, form):
             save_file(filename, form, user_id)
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
-            return redirect(url_for('uploaded_file', filename=filename))
+            return filename
+
 
 
 def save_file(file_name, form, user_id):
@@ -89,12 +89,12 @@ def all_files(files):
 
 
 
-if __name__ == '__main__':
-    #html = get_html('https://www.python.org/blogs/')
-    #if html:
-        #with open('python.org.html', 'w', encoding='utf8') as f:
-        #    f.write(html)
-    #    news = get_python_news(html)
-        print(news)
+# if __name__ == '__main__':
+#     #html = get_html('https://www.python.org/blogs/')
+#     #if html:
+#         #with open('python.org.html', 'w', encoding='utf8') as f:
+#         #    f.write(html)
+#     #    news = get_python_news(html)
+#         print(news)
 
 

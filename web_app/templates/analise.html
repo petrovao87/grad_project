@@ -2,22 +2,23 @@
 
 {% block body %}
 
+
 <form  enctype=multipart/form-data method="POST">
 <div class="container">
     <div class="row">
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.sample_name.label }}
                 {{ form.sample_name() }}
             </div>
         </div>
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.alloy_name.label }}
                 {{ form.alloy_name() }}
             </div>
         </div>
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-6 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.comment.label }}
                 {{ form.comment() }}
@@ -29,61 +30,95 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-            {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <div class="alert alert-warning" role="alert">
-                        {% for message in messages %}
-                            {{ message }}<br>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                {% endwith %}
-
+                <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image"> 
             <div class="form-group">
-                {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.upload.label }}
-                    {{ form.upload() }}
-                </div>
+                 <div class="row">
+                    <div class="col-md-4">
+                     </div>
+                 </div>
+                    <div class="form-group">
+                    </div>
                 {{ form.submit_upload() }}
             </div>
         </div>
+    </form>
+
         <div class="col mb-1 bg-secondary text-white">
-            <div class="form-group">
-                ИЗОБРАЖЕНИЕ
+            <div class="form-group"> 
+                <form enctype="multipart/form-data" method="post">
+                <img src="/get-files/{{ filename }}" upload class="img-fluid" alt="Responsive image"> </form>
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group">
-                {{ form.image_scale.label }}
-                {{ form.image_scale() }}
+
+                          Увеличение при съемке
+                          <select class="custom-select custom-select-sm">
+                                <option value="1">x10000</option>
+                                <option value="2">x20000</option>
+                                <option value="3">x30000</option>
+                                <option value="4">x40000</option>
+                                <option value="5">x50000</option>
+                        </select>
+                
+                
                 {{ form.image_wb.label }}
-                {{ form.image_wb() }}
-                {{ form.particle.label }}
-                {{ form.particle() }}
+                
+                    <div class="form-row">
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Min">
+                      </div>
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Max">
+                      </div>
+                      <button type="submit" class="btn btn-info">Ок</button>
+                    </div>
+                  </form>
+
+                  {{ form.particle.label }}
+                  <form>
+                    <div class="form-row">
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Min">
+                      </div>
+                      <div class="col-sm">
+                        <input type="text" class="form-control" placeholder="Max">
+                      </div>
+                      <button type="submit" class="btn btn-info">Ок</button>
+                    </div>
+                    </form>  
+                    <form>
+                    <button type="submit" class="btn btn-info">Проанализировать</button>
+
+                    </form> 
+
             </div>
         </div>
     </div>
 </div>
-</form>
+
 <div class="container">
     <div class="row">
-        <div class="col mb-1 bg-secondary text-white">
+        <div class="col-4 mb-1 bg-secondary text-white">
             <div class="form-group">
-                КНОПКА<br>
-                <div class="row">
-                <div class="col">
-                    Средний размер, нм {{ average_size }}
-                    Отклонение, нм
-                    Усредненный параметр формы, P/Sqrt
-                    Количество частиц
-                </div>
-                <div class="col">
-                    average_size{{ average_size }}
-                    deviation_size{{ deviation_size }}
-                    shape_parametr{{ shape_parametr }}
-                    particles_number{{ particles_number }}
-                </div>
+                <p class="font-weight-bold" >Результаты:</p>
+                <div class="row ">
+                    <table class="table bg-light table-striped table-bordered text-dark" >
+                        <tbody>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Средний размер, нм</p></th>
+                                <td>100</td>
+                            </tr>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Погрешность, нм</p></th>
+                                <td>100</td>
+                            </tr>
+                            <tr class="mb-1">
+                                <th scope="row"><p class="font-weight-normal">Количество частиц</p></th>
+                                <td>100</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

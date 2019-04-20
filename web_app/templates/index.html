@@ -2,33 +2,21 @@
 
 {% block body %}
 
-<div class="p-5 mb-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-
-            </div>
-            <div class="col-5">
-                <h2>Привет Исследователь!</h2>
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-    </div>
+<div class="p-4 mb-2 text-center">
+    <h1>Привет Исследователь!</h1></p>
 </div>
 
 <div class="container mb-3">
     <div class="row justify-content-around">
-        <div class="col-5">
-            <div class="col p-5 mb-1 bg-secondary">
+        <div class="col-6">
+            <div class="col p-5 mb-1 bg-secondary text-white">
                 <h4>Если ты с нами в первый раз:</h4><br>
                 <a class="btn btn-info btn-block" href="{{ url_for('registr') }}" role="button">
                     Регистрация
                 </a>
                 </form>
             </div>
-            <div class="col p-5 mb-1 bg-secondary">
+            <div class="col p-5 mb-1 bg-secondary text-white">
                 <h4>Если мы уже знакомы:</h4><br>
                 {% if current_user.is_authenticated %}
                 <a class="btn btn-info btn-block" href="{{ url_for('start') }}" role="button">
@@ -41,7 +29,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-5 p-5 mb-1 bg-secondary">
+        <div class="col-5 p-5 mb-1 bg-secondary text-white">
             Немного о программе PhaseCatcher:<br>
             <ul><li>мы</li></ul>
             <ol><li>что-то</li></ol>
@@ -52,7 +40,7 @@
 </div>
 
 
-<div class="p-4 bg-secondary text-white fixed-bottom"></div>
+<!-- <div class="p-4 bg-secondary text-white fixed-bottom"></div> -->
 
 
 {% endblock %}

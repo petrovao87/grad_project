@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField, FloatField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import DataRequired
 
 
@@ -26,6 +26,8 @@ class DownloadForm(FlaskForm):
 
     image_scale = StringField('Увеличение при съемке', validators=[DataRequired()], render_kw={'class': 'form-control'})
     image_wb = StringField('Бинаризация', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    image_wb_min = StringField('Min', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
+    image_wb_max = StringField('Max', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
     particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
     submit = SubmitField('Начать анализ', render_kw={'class': 'btn btn-info'})
