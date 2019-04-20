@@ -25,8 +25,9 @@ while len(inputs) < 5:
     inputs.append(word)
     lens.append(len(word))
 
-print('Слова: ', sum(inputs))
-print('Количество букв: ', sum(lens))
+
+print('Слова: ', inputs)
+print('Количество букв: ', lens)
 
 
 # 3)
@@ -57,10 +58,13 @@ for i in range(1, 101):
 # y + y + z + x + x
 main = []
 secondary = []
+x = int(input())
+y = int(input())
+z = int(input())
 matrix =[
-    ['y', 2, 'x'],
-    [1, 'z', 3],
-    ['x', 1, 'y']
+    [y, 2, x],
+    [1, z, 3],
+    [x, 1, y]
 ]
 x = 0
 y = -1
@@ -71,4 +75,4 @@ for row in matrix:
     x += 1
     y += -1
 result = main + secondary
-print(result)
+print(sum(result))
