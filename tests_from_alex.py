@@ -21,6 +21,7 @@ print('Отрицательных элементов в списке: ', quantit
 inputs = []
 lens = []
 while len(inputs) < 5:
+    print('Введите слово: ')
     word = input()
     inputs.append(word)
     lens.append(len(word))
@@ -58,8 +59,11 @@ for i in range(1, 101):
 # y + y + z + x + x
 main = []
 secondary = []
+print('Введите х: ')
 x = int(input())
+print('Введите y: ')
 y = int(input())
+print('Введите z: ')
 z = int(input())
 matrix =[
     [y, 2, x],
@@ -69,6 +73,7 @@ matrix =[
 x = 0
 y = -1
 for row in matrix:
+    print(row)
     main.append(row[x])
     if not len(row) // 2 == x:
         secondary.append(row[y])
