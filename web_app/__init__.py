@@ -141,21 +141,6 @@ def create_app():
 # image_test = cv2.imread(os.path.join(‎⁨grad_project⁩, '698_crop_test.jpg'), cv2.CV_8UC1) )
 
 
-    # @app.route('/projects', methods=['GET', 'POST'])
-    # def projects():
-    #     if current_user.is_authenticated:
-    #         title = 'TEST'
-    #         form = ProjectsForm()
-    #         print(current_user.id)
-    #         experiment_time = datetime.now()
-    #         #db_data = Experiment(name='exp', image_scale='1', image_wb='2', image_cont='3', experiment_time=experiment_time, file_id='1')
-    #         files_list = Experiment.query.order_by(Experiment.experiment_time.desc()).all()
-    #         #db.session.add(db_data)
-    #         #db.session.commit()
-    #         return render_template('projects.html', form=form, files_list=files_list, title=title)
-    #     else:
-    #         return redirect(url_for('index'))
-
 
     @app.route('/projects', methods=['GET', 'POST'])
     def projects():

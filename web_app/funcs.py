@@ -70,8 +70,7 @@ def save_file(file_name, form, user_id):
     print('sample name', form.sample_name.data)
 
     if not file_exists:
-        file_2_db = Files(file_name=file_name, sample_name=form.sample_name.data, alloy_name=form.alloy_name.data,
-                          comment=form.comment.data, uploaded=uploaded, user_id=user_id)
+        file_2_db = Files(file_name=file_name, uploaded=uploaded, user_id=user_id)
         print('@'*11, file=sys.stderr)
         db.session.add(file_2_db)
         print('@'*11, file=sys.stderr)
