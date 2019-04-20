@@ -28,7 +28,7 @@
                 <th scope="row">{{ list.id }}</th>
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong{{ list.id }}">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong{{ list.id }}">
                         {{ list.name }}
                     </button>
                     <!-- Modal -->
@@ -76,9 +76,13 @@
 
                                     <div id="container" style=" margin: 0 auto"></div>
 
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
+                                    <div id="container" style="width:100%; height:400px;"></div>
+
+<!--<script src="https://code.highcharts.com/highcharts.js"></script>-->
+<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+<!--<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
 <script>
     Highcharts.chart('container', {
   chart: {
@@ -91,24 +95,10 @@
     text: 'Source: WorldClimate.com'
   },
   xAxis: [{
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    categories: [175, 178, 179, 180, 186, 189, 190, 194, 195, 197, 202, 208, 209, 218, 219, 223, 225, 228, 228, 234, 235, 237, 242, 244, 245, 245, 246, 250, 252, 252, 252, 253, 254, 256, 257, 258, 260, 261, 263, 269, 269, 270, 270, 270, 273, 273, 275, 279, 281, 282, 284, 284, 293, 297, 298, 299, 302, 302, 302, 303, 304, 304, 308, 310, 310, 312, 313, 315, 315, 317, 324, 329, 333, 347, 348, 353, 365, 371],
     crosshair: true
   }],
-  yAxis: [{ // Primary yAxis
-    labels: {
-      format: '{value}°C',
-      style: {
-        color: Highcharts.getOptions().colors[1]
-      }
-    },
-    title: {
-      text: 'Temperature',
-      style: {
-        color: Highcharts.getOptions().colors[1]
-      }
-    }
-  }, { // Secondary yAxis
+  yAxis: [{ // Secondary yAxis
     title: {
       text: 'Rainfall',
       style: {
@@ -136,18 +126,21 @@
     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255,255,255,0.25)'
   },
   series: [{
-    name: 'Rainfall',
-    type: 'column',
-    yAxis: 1,
-    data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-    tooltip: {
-      valueSuffix: ' mm'
-    }
-
-  }, {
     name: 'Temperature',
     type: 'spline',
-    data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+    data: [0.00140055, 0.00157481, 0.00163614, 0.00169911, 0.00211155, 0.00233993,
+0.00241928, 0.00275235, 0.00283941, 0.00301788, 0.00348764, 0.00408882,
+0.00419216, 0.00514478, 0.00525157, 0.00567624, 0.00588566, 0.00619383,
+0.00619383, 0.00677813, 0.00687012, 0.0070485, 0.00745713, 0.0076036,
+0.00767283, 0.00767283, 0.00773927, 0.00797554, 0.00807494, 0.00807494,
+0.00807494, 0.00811973, 0.00816116, 0.00823374, 0.00826479, 0.0082923,
+0.00833655, 0.00835322, 0.00837557, 0.00835398, 0.00835398, 0.00833749,
+0.00833749, 0.00833749, 0.00826629, 0.00826629, 0.00820103, 0.0080294,
+0.00792392, 0.00786649, 0.0077426, 0.0077426, 0.00705297, 0.00668928,
+0.00659404, 0.00649729, 0.00619903, 0.00619903, 0.00619903, 0.00609729,
+0.00599458, 0.00599458, 0.00557607, 0.00536367, 0.00536367, 0.00515026,
+0.00504342, 0.00482994, 0.00482994, 0.00461733, 0.00388976, 0.00339608,
+0.00302253, 0.00190143, 0.00183343, 0.00151813, 0.00092268, 0.00070237],
     tooltip: {
       valueSuffix: '°C'
     }
@@ -155,6 +148,33 @@
 });
 </script>
 
+
+
+<!--                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>-->
+<!--                                    <canvas id="myChart" width="400" height="400">-->
+<!--<script>-->
+<!--var ctx = document.getElementById('myChart');-->
+
+
+<!--                                    var mixedChart = new Chart(ctx, {-->
+<!--    type: 'bar',-->
+<!--    data: {-->
+<!--        datasets: [{-->
+<!--            label: 'Bar Dataset',-->
+<!--            data: [10, 20, 30, 40]-->
+<!--        }, {-->
+<!--            label: 'Line Dataset',-->
+<!--            data: [50, 50, 50, 50],-->
+
+<!--            // Changes this dataset to become a line-->
+<!--            type: 'line'-->
+<!--        }],-->
+<!--        labels: ['January', 'February', 'March', 'April']-->
+<!--    },-->
+<!--    options: options-->
+<!--});-->
+<!--</script>-->
+<!--                                    </canvas>-->
 
                                     !!!!!!!!!!!!!!!!!!!!!!!!!
                                     <div class="modal-footer">

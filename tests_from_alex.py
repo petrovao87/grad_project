@@ -25,8 +25,8 @@ while len(inputs) < 5:
     inputs.append(word)
     lens.append(len(word))
 
-print('Слова: ', inputs)
-print('Количество букв: ', lens)
+print('Слова: ', sum(inputs))
+print('Количество букв: ', sum(lens))
 
 
 # 3)
