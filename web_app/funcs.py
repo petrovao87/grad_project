@@ -1,5 +1,5 @@
 import requests
-from web_app.model import db, Files
+from web_app.model import db, Files, Experiment
 import os
 import sys
 from datetime import datetime
@@ -60,7 +60,10 @@ def upload_file(user_id, form):
 
             return filename
 
-
+def analise_file(user_id, form):
+    file_2_db = Experiment(sample_name='sample_name', alloy_name='alloy_name', comment='1', upload='upload', image_scale='image_scale',particle='particle', average_size='average_size', deviation_size='deviation_size', shape_parametr='shape_parametr', particles_number='particles_number', image_wb=form.image_wb_min)
+    db.session.add(file_2_db)
+    db.session.commit()
 
 def save_file(file_name, form, user_id):
     uploaded = datetime.now()

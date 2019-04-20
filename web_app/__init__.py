@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files
+from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files, analise_file
 from web_app.model import db, Files, User, Experiment
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file
@@ -113,11 +113,13 @@ def create_app():
             if request.method == 'POST':
                 user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id, form)
+                print(request.form['image_wb_min'])
             else:
                 filename = request.args.get('file')
             return render_template('analise.html', form=form, filename=filename, title=title)
             # user_id = User.query.filter(User.username == current_user.username).first()
             upload_file(current_user.id, form)
+            analise_file(current_user.id, form)
             files_list = Files.query.order_by(Files.uploaded.desc()).all()
             return render_template('analise.html', form=form, files_list=files_list, title=title)
         else:
