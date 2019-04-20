@@ -81,3 +81,31 @@ for row in matrix:
     y += -1
 result = main + secondary
 print(sum(result))
+
+y = int(input())
+x = [0, 1, 3, 4, 6, 7, 8, 11, 13, 14, 16, 17, 18, 19]
+def binary_search(y, x):
+        middle = len(x) // 2
+        if len(x) > 1:
+            if x[middle-1] > y:
+                print('меньше')
+                x = x[:middle-1]
+                print(x)
+                middle = len(x) // 2
+                if x[middle-1] == y:
+                    return middle
+                else:
+                    binary_search(y, x)
+            elif x[middle-1] < y:
+                print('больше')
+                x = x[(middle-1):]
+                print(x)
+                middle = len(x) // 2
+                if x[middle-1] == y:
+                    return middle
+                else:
+                    binary_search(y, x)
+        else:
+            return middle
+print(binary_search(y, x))
+
