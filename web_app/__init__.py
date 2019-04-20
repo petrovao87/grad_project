@@ -12,7 +12,6 @@ import os
 def create_app():
 
     app = Flask(__name__)
-    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
     app.config.from_pyfile('config.py')
     db.init_app(app)
 
@@ -44,10 +43,7 @@ def create_app():
                 user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id, form)
                 return redirect(url_for('.analise', file=filename))
-
-            
             print(current_user.id)
-            
             return render_template('start_work.html', form=form, )
         else:
             return redirect(url_for('index'))
@@ -64,14 +60,12 @@ def create_app():
     @app.route('/process-login', methods=['POST'])
     def process_login():
         form = LoginForm()
-
         if form.validate_on_submit():
             user = User.query.filter(User.username == form.username.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
                 flash('Вы вошли на сайт')
                 return redirect(url_for('start'))
-
         flash('Неправильное имя пользователя или пароль')
         return redirect(url_for('login'))
 
@@ -83,16 +77,15 @@ def create_app():
 
     @app.route('/registr')
     def registr():
-
         title = 'Регистрация'
         registr_form = RegistrForm()
         time = datetime.now()
         return render_template('registr.html', page_title=title, form=registr_form, time=time)
 
+
     @app.route('/process-registr', methods=['POST'])
     def process_registr():
         form = RegistrForm()
-
         if form.validate_on_submit():
             print(User.query.filter(User.username == form.username.data).count())
             if not User.query.filter(User.username == form.username.data).count():
@@ -100,29 +93,19 @@ def create_app():
                 if not form.password1.data == form.password2.data:
                     flash('Пароли не совпадают')
                     return redirect(url_for('registr'))
-
                 new_user = User(username=form.username.data,)
                 new_user.set_password(form.password1.data)
-
                 db.session.add(new_user)
                 db.session.commit()
                 flash('Вы успешно зарегистрировались, авторизуйтесь!')
                 return redirect(url_for('login'))
-
             flash('Такой пользователь уже существует')
             return redirect(url_for('login'))
         return redirect(url_for('login'))
 
-
     @app.route('/analise', methods=['GET', 'POST'])
     def analise():
-        # 
-        basedir = os.path.abspath(os.path.dirname(__file__))
-        UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
         filename = None
-        image_original = None
-        image_cut = None
-        area = (0, 0, 1600, 1115)
         if current_user.is_authenticated:
             title = 'TEST'
             form = DownloadForm()
@@ -130,25 +113,9 @@ def create_app():
             if request.method == 'POST':
                 user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id, form)
-                image_original = Image.open(upload_file) 
-                image_resize = image_original.resize((1600, 1200)) 
-                image_cut = image_resize.crop(area)
             else:
-                
                 filename = request.args.get('file')
-                # file.save(os.path.join(UPLOAD_FOLDER, filename))
-                # filename = upload_file(current_user.id, form) 
-                print(os.path.join(UPLOAD_FOLDER, filename))
-                filename_server = os.path.join(UPLOAD_FOLDER, filename)
-                image_original = Image.open(filename_server) 
-                image_resize = image_original.resize((1600, 1200)) 
-                image_cut = image_resize.crop(area)
-                image_cut.save(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), 'JPEG')
-                image_cut = 'crop_'+filename
- 
-            return render_template('analise.html', form=form, filename=filename, image_original=image_original, 
-                                    image_cut=image_cut, title=title)
-       
+            return render_template('analise.html', form=form, filename=filename, title=title)
         else:
             return redirect(url_for('index'))
 
@@ -165,9 +132,10 @@ def create_app():
         image_cut = 'crop_'+filename
         return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
 
-    
 
-
+# image_test = cv2.imread(os.path.join(‎⁨grad_project⁩, '698_crop_test.jpg'), cv2.CV_8UC1) )
+   
+   
     # @app.route('/projects', methods=['GET', 'POST'])
     # def projects():
     #     if current_user.is_authenticated:
