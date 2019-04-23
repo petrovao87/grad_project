@@ -30,8 +30,8 @@ class DownloadForm(FlaskForm):
     image_wb_max = IntegerField('Max', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
 
     particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    particle_min = StringField('Выбор частиц Min', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    particle_max = StringField('Выбор частиц Max', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    particle_min = IntegerField('Выбор частиц Min', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    particle_max = IntegerField('Выбор частиц Max', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
     submit = SubmitField('Проанализировать', render_kw={'class': 'btn btn-info'})
 

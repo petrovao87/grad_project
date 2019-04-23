@@ -45,7 +45,7 @@
 
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group">
-                <img id="image_preview" src="/treat-files/60-255/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
+                <img id="image_preview" src="/treat-files/0-255/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -65,10 +65,10 @@
                 
                     <div class="form-row">
                       <div class="col-sm">
-                          <input class="form-control" id="image_wb_min" type="text" value="">
+                          <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0">
                       </div>
                       <div class="col-sm">
-                          <input class="form-control" id="image_wb_max" type="text" value="">
+                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255">
                       </div>
                       <span id="binar_ok" class="btn btn-info">Ок</span>
                     </div>
@@ -86,24 +86,32 @@
 
                 </script>
 
-
                   {{ form.particle.label }}
 
-                    <div class="form-row">
-                      <div class="col-sm">
-                        <input type="text" class="form-control" placeholder="Min">
-                      </div>
-                      <div class="col-sm">
-                        <input type="text" class="form-control" placeholder="Max">
-                      </div>
-                      <button type="submit" class="btn btn-info">Ок</button>
+                     <div class="form-row">
+                        <div class="col-sm">
+                            <input class="form-control" id="particle_min" type="text" value="" placeholder="Min">
+                        </div>
+                        <div class="col-sm">
+                            <input class="form-control" id="particle_max" type="text" value="" placeholder="Max">
                     </div>
-                    </form>  
-                    <form>
-                    {{ form.submit}}
+                    <span id="particle_ok" class="btn btn-info">Ок</span>
+                  </div>
+              <script language="JavaScript">
+                  const btn_ok_particle = document.querySelector('#particle_ok');
 
-                    </form> 
+                  btn_ok_particle.addEventListener('click', (event) => {
+                      let part_min = document.querySelector('#particle_min').value;
+                      let part_max = document.querySelector('#particle_max').value;
 
+                      let link = '/treat-files/0-255/' + part_min + '-' + part_max + '/{{ filename }}'
+
+                      document.querySelector('#image_preview').src = link;
+                  });
+
+              </script>
+
+             
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files, analise_file
 from web_app.model import db, Files, User, Experiment
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
-from web_app.treatment import treatment, treatment_analise
+from web_app.treatment import treatment
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file, session
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
@@ -156,24 +156,15 @@ def create_app():
         """
         binar_min = int(binar.split('-')[0])
         binar_max = int(binar.split('-')[1])
-        result = treatment(filename, binar_min, binar_max)
+        part_min = int(particle.split('-')[0])
+        part_max = int(particle.split('-')[1])
+        result = treatment(filename, binar_min, binar_max, part_min, part_max)
         return send_file(os.path.join(result), attachment_filename='image.jpg')
 
-    @app.route('/analise-files/<binar>/<particle>/<filename>')
-    def analise_file(binar, particle, filename):
-        """ВОЗВРАЩАЕМ JSON"""
-        pass
-
-
-        # # filename = session.get('filename')
-        # print(filename, 'CONTOUR FILE')
-        # basedir = os.path.abspath(os.path.dirname(__file__))
-        # print(basedir)
-        # UPLOAD_FOLDER = os.path.join(basedir, r'uploads\workdir\\')
-        # form = DownloadForm()
-        # treatment(filename, form.image_wb_min, form.image_wb_max, form.particle_min, form.particle_max)
-        #
-        # return send_file(os.path.join(UPLOAD_FOLDER, 'final_'+filename), attachment_filename='image.jpg')
+    # @app.route('/analise-files/<binar>/<particle>/<filename>')
+    # def analise_file(binar, particle, filename):
+    #     """ВОЗВРАЩАЕМ JSON"""
+    #     pass
 
     @app.route('/projects', methods=['GET', 'POST'])
     def projects():
@@ -182,15 +173,7 @@ def create_app():
             form = ProjectsForm()
             print(current_user.id)
             experiment_time = datetime.now()
-            #db_exp = Experiment(name='exp3', image_scale='3', image_wb='3', image_cont='3',
-            #                    experiment_time=experiment_time, file_id='1', sample_name='ccc',
-            #                    alloy_name='ccc', comment='com3', average_size='3', deviation_size='3',
-            #                    shape_parameter='3', particles_number='3'
-            #                    )
-            #db_files = Files(file_name='file3', uploaded=experiment_time, user_id='2')
-            #db.session.add(db_exp)
-            #db.session.add(db_files)
-            #db.session.commit()
+
             list_average_size = []
             list_deviation_size = []
             list_shape_parameter = []
