@@ -30,7 +30,7 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-                <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image"> 
+                <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image">
             <div class="form-group">
                  <div class="row">
                     <div class="col-md-4">
@@ -46,7 +46,7 @@
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group"> 
                 <form enctype="multipart/form-data" method="post">
-                <img src="/get-files/{{ filename }}" upload class="img-fluid" alt="Responsive image"> </form>
+                <img src="/treat-files/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}"> </form>
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -73,10 +73,10 @@
                       </div>
                       <button type="submit" class="btn btn-info">Ок</button>
                     </div>
-                  </form>
+
 
                   {{ form.particle.label }}
-                  <form>
+
                     <div class="form-row">
                       <div class="col-sm">
                         <input type="text" class="form-control" placeholder="Min">
@@ -88,7 +88,7 @@
                     </div>
                     </form>  
                     <form>
-                    <button type="submit" class="btn btn-info">Проанализировать</button>
+                    {{ form.submit}}
 
                     </form> 
 

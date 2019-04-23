@@ -31,7 +31,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def upload_file(user_id, form):
+def upload_file(user_id):
     # print('UPLOAD!!!', file=sys.stdout)
     if request.method == 'POST':
         # print('POST!!!', file=sys.stdout)
@@ -55,22 +55,25 @@ def upload_file(user_id, form):
             uploaded = datetime.now()
             print(uploaded, file=sys.stdout)
             print(filename, file=sys.stdout)
-            save_file(filename, form, user_id)
+            save_file(filename, user_id)
             print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', file=sys.stdout)
 
             return filename
 
 def analise_file(user_id, form):
-    file_2_db = Experiment(sample_name='sample_name', alloy_name='alloy_name', comment='1', upload='upload', image_scale='image_scale',particle='particle', average_size='average_size', deviation_size='deviation_size', shape_parametr='shape_parametr', particles_number='particles_number', image_wb=form.image_wb_min)
-    db.session.add(file_2_db)
+    experiment_time = datetime.now()
+    experiment_2_db = Experiment(name='name', sample_name=form.sample_name, alloy_name=form.alloy_name, comment=form.comment,
+                           experiment_time=experiment_time, image_scale=form.image_scale, particle='particle',
+                           average_size='average_size', deviation_size='deviation_size', shape_parametr='shape_parametr', particles_number='particles_number', image_wb=form.image_wb_min)
+    db.session.add(experiment_2_db)
     db.session.commit()
 
-def save_file(file_name, form, user_id):
+def save_file(file_name, user_id):
     uploaded = datetime.now()
     file_exists = Files.query.filter(Files.file_name == file_name).count()
-    print(form)
-    print('.sample_name.data', form.alloy_name.data)
-    print('sample name', form.sample_name.data)
+    # print(form)
+    # print('.sample_name.data', form.alloy_name.data)
+    # print('sample name', form.sample_name.data)
 
     if not file_exists:
         file_2_db = Files(file_name=file_name, uploaded=uploaded, user_id=user_id)
@@ -79,6 +82,7 @@ def save_file(file_name, form, user_id):
         print('@'*11, file=sys.stderr)
         db.session.commit( )
     else:
+        print('ФАЙЛ УЖЕ ЕСТЬ')
         pass
 
 

@@ -2,7 +2,8 @@ from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files, analise_file
 from web_app.model import db, Files, User, Experiment
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file
+from web_app.treatment import treatment, treatment_analise
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file, session
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
 from PIL import Image
@@ -41,8 +42,8 @@ def create_app():
             form = DownloadForm()
             if request.method == 'POST':
                 user_id = User.query.filter(User.username == current_user.username).first()
-                filename = upload_file(current_user.id, form)
-                return redirect(url_for('.analise', file=filename))
+                filename = upload_file(current_user.id)
+                return redirect(url_for('analise', file=filename))
             print(current_user.id)
             return render_template('start_work.html', form=form, )
         else:
@@ -111,20 +112,25 @@ def create_app():
             form = DownloadForm()
             print(current_user.id)
             if request.method == 'POST':
-                user_id = User.query.filter(User.username == current_user.username).first()
-                filename = upload_file(current_user.id, form)
-                print(request.form['image_wb_min'])
+                print('POST')
+                # user_id = User.query.filter(User.username == current_user.username).first()
+                filename = upload_file(current_user.id)
+                print(request.form['image_wb_min'], 'REQUEST FORM')
+                contour_file(filename)
             else:
+                print('GET')
                 filename = request.args.get('file')
+                if form.validate_on_submit():
+                    crop_file(filename)
+                    contour_file(filename)
+                    session['filename'] = filename
+
+
             return render_template('analise.html', form=form, filename=filename, title=title)
             # user_id = User.query.filter(User.username == current_user.username).first()
-            upload_file(current_user.id, form)
-            analise_file(current_user.id, form)
-            files_list = Files.query.order_by(Files.uploaded.desc()).all()
-            return render_template('analise.html', form=form, files_list=files_list, title=title)
+            #analise_file(current_user.id, form)
         else:
             return redirect(url_for('index'))
-
 
     @app.route('/get-files/<filename>')
     def crop_file(filename):
@@ -139,10 +145,17 @@ def create_app():
         image_cut = 'crop_'+filename
         return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
 
+    @app.route('/treat-files/<filename>')
+    def contour_file(filename):
+        filename = session.get('filename')
+        print(filename, 'CONTOUR FILE')
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        print(basedir)
+        UPLOAD_FOLDER = os.path.join(basedir, r'uploads\workdir\\')
+        form = DownloadForm()
+        treatment(filename, form.image_wb_min, form.image_wb_max, form.particle_min, form.particle_max)
 
-# image_test = cv2.imread(os.path.join(‎⁨grad_project⁩, '698_crop_test.jpg'), cv2.CV_8UC1) )
-
-
+        return send_file(os.path.join(UPLOAD_FOLDER, 'final_'+filename), attachment_filename='image.jpg')
 
     @app.route('/projects', methods=['GET', 'POST'])
     def projects():

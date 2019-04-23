@@ -28,13 +28,16 @@ class DownloadForm(FlaskForm):
     image_wb = StringField('Бинаризация', validators=[DataRequired()], render_kw={'class': 'form-control'})
     image_wb_min = IntegerField('Min', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
     image_wb_max = IntegerField('Max', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
-    particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
-    submit = SubmitField('Начать анализ', render_kw={'class': 'btn btn-info'})
+    particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    particle_min = StringField('Выбор частиц Min', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    particle_max = StringField('Выбор частиц Max', validators=[DataRequired()], render_kw={'class': 'form-control'})
+
+    submit = SubmitField('Проанализировать', render_kw={'class': 'btn btn-info'})
 
     average_size = StringField('Средний размер частиц, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
     deviation_size = StringField('Отклонение, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    shape_parametr = StringField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
+    shape_parameter = StringField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
     particles_number = StringField('Количество частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
 

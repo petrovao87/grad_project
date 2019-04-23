@@ -92,21 +92,37 @@ def binary_search(y, x):
         middle = (min + max) // 2
 
         while len(x) > 1:
-            if x[middle] < y:
-                print('меньше')
-                x = x[middle:]
+            print(len(x))
+            if x[middle-1] == y:
+                return '1111'
+            elif x[middle-1] < y:
+                print('право')
+                x = x[middle+1:]
                 print(x)
                 binary_search(y, x)
-            elif x[middle] > y:
-                print('больше')
+            else:
+                print('лево')
                 x = x[:middle]
                 print(x)
                 binary_search(y, x)
-            if x[middle] == y:
-                return '1111'
-            else:
-                return 'нет такого'
+        return 'нет такого'
 
 
-binary_search(y, x)
+print(binary_search(y, x))
 
+# def binary_search(x, y):
+#     low = 0
+#     high = len(x) - 1
+#     while low <= high:
+#         mid = (low + high) // 2
+#         guess = x[mid]
+#         if guess == y:
+#             return mid
+#         if guess > y:
+#             high = mid - 1
+#         else:
+#             low = mid + 1
+#     return None
+#
+#
+# print(binary_search(x, y))
