@@ -8,12 +8,12 @@ import scipy.stats as stats
 from numpy import histogram, std
 
 
-def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_area):
+def treatment(filename, min_binary, max_binary):
     basedir = os.path.abspath(os.path.dirname(__file__))
     UPLOAD_FOLDER = os.path.join(basedir, r'uploads\\')
     print(UPLOAD_FOLDER)
     print(filename)
-    print(min_binary, max_binary, 'MIN', 'MAX')
+    # print(min_binary, max_binary, 'MIN', 'MAX')
     print(''' В функцию передается загруженный файл''')
     image_original = Image.open(UPLOAD_FOLDER + filename)
     print('''Меняем разрешение исходного изображения''')
@@ -55,11 +55,13 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     image_phasecather = cv2.imread(r'workdir\crop_' + filename, cv2.CV_32FC1)
     for contour in contours:
         #print(contour)
-        # if cv2.contourArea(contour) > 1500:
-        if (cv2.contourArea(contour) > min_contour_area) and (cv2.contourArea(contour) < max_contour_area):
+        if cv2.contourArea(contour) > 1500:
+        # if (cv2.contourArea(contour) > min_contour_area) and (cv2.contourArea(contour) < max_contour_area):
             cv2.drawContours(image_phasecather, [contour], -1, (250, 0, 0), -1)
     print(''' сохраняем изображение с закрашенными контурами''')
     cv2.imwrite(UPLOAD_FOLDER + r'workdir\final_' + filename, image_phasecather)
+
+    return UPLOAD_FOLDER + r'workdir\final_' + filename
 
 
 def treatment_analise():

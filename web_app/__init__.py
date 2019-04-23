@@ -145,17 +145,35 @@ def create_app():
         image_cut = 'crop_'+filename
         return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
 
-    @app.route('/treat-files/<filename>')
-    def contour_file(filename):
-        filename = session.get('filename')
-        print(filename, 'CONTOUR FILE')
-        basedir = os.path.abspath(os.path.dirname(__file__))
-        print(basedir)
-        UPLOAD_FOLDER = os.path.join(basedir, r'uploads\workdir\\')
-        form = DownloadForm()
-        treatment(filename, form.image_wb_min, form.image_wb_max, form.particle_min, form.particle_max)
+    @app.route('/treat-files/<binar>/<particle>/<filename>')
+    def contour_file(binar, particle, filename):
+        """
 
-        return send_file(os.path.join(UPLOAD_FOLDER, 'final_'+filename), attachment_filename='image.jpg')
+        :param binanr: (int:min-int:max) /12-15/
+        :param particle:
+        :param filename:
+        :return:
+        """
+        binar_min = int(binar.split('-')[0])
+        binar_max = int(binar.split('-')[1])
+        result = treatment(filename, binar_min, binar_max)
+        return send_file(os.path.join(result), attachment_filename='image.jpg')
+
+    @app.route('/analise-files/<binar>/<particle>/<filename>')
+    def analise_file(binar, particle, filename):
+        """ВОЗВРАЩАЕМ JSON"""
+        pass
+
+
+        # # filename = session.get('filename')
+        # print(filename, 'CONTOUR FILE')
+        # basedir = os.path.abspath(os.path.dirname(__file__))
+        # print(basedir)
+        # UPLOAD_FOLDER = os.path.join(basedir, r'uploads\workdir\\')
+        # form = DownloadForm()
+        # treatment(filename, form.image_wb_min, form.image_wb_max, form.particle_min, form.particle_max)
+        #
+        # return send_file(os.path.join(UPLOAD_FOLDER, 'final_'+filename), attachment_filename='image.jpg')
 
     @app.route('/projects', methods=['GET', 'POST'])
     def projects():

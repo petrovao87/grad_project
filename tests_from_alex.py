@@ -89,12 +89,13 @@ x = [0, 1, 3, 4, 6, 7, 8, 11, 13, 14, 16, 17, 18, 19]
 def binary_search(y, x):
         min = 0
         max = len(x)
-        middle = (min + max) // 2
+        middle = ((min + max) // 2) - 1
 
         while len(x) > 1:
             print(len(x))
-            if x[middle-1] == y:
-                return '1111'
+            if x[middle] == y:
+                break
+                # return '1111'
             elif x[middle-1] < y:
                 print('право')
                 x = x[middle+1:]

@@ -44,9 +44,8 @@
     </form>
 
         <div class="col mb-1 bg-secondary text-white">
-            <div class="form-group"> 
-                <form enctype="multipart/form-data" method="post">
-                <img src="/treat-files/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}"> </form>
+            <div class="form-group">
+                <img id="image_preview" src="/treat-files/60-255/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -66,13 +65,26 @@
                 
                     <div class="form-row">
                       <div class="col-sm">
-                      {{ form.image_wb_min() }}
+                          <input class="form-control" id="image_wb_min" type="text" value="">
                       </div>
                       <div class="col-sm">
-                       {{ form.image_wb_max() }}
+                          <input class="form-control" id="image_wb_max" type="text" value="">
                       </div>
-                      <button type="submit" class="btn btn-info">Ок</button>
+                      <span id="binar_ok" class="btn btn-info">Ок</span>
                     </div>
+                <script language="JavaScript">
+                    const btn_ok_binar = document.querySelector('#binar_ok');
+
+                    btn_ok_binar.addEventListener('click', (event) => {
+                        let binar_min = document.querySelector('#image_wb_min').value;
+                        let binar_max = document.querySelector('#image_wb_max').value;
+
+                        let link = '/treat-files/' + binar_min + '-' + binar_max + '/1-15000/{{ filename }}'
+
+                        document.querySelector('#image_preview').src = link;
+                    });
+
+                </script>
 
 
                   {{ form.particle.label }}
