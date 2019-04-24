@@ -37,6 +37,10 @@ def create_app():
     def uploaded_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
+    @app.route('/workdir/<filename>')
+    def workdir_uploaded_file(filename):
+        return send_from_directory(app.config["UPLOAD_FOLDER"] + '/workdir', filename)
+
     @app.route('/start', methods=['GET', 'POST'])
     def start():
         if current_user.is_authenticated:

@@ -137,6 +137,13 @@
                 <script language="JavaScript">
                     const btn_ok_binar = document.querySelector('#binar_ok');
 
+                    function httpGet(theUrl) {
+                            var xmlHttp = new XMLHttpRequest();
+                            xmlHttp.open( "GET", theUrl, false );
+                            xmlHttp.send( null );
+                            return xmlHttp.responseText;
+                        }
+
                     btn_ok_binar.addEventListener('click', (event) => {
                         let binar_min = document.querySelector('#image_wb_min').value;
                         let binar_max = document.querySelector('#image_wb_max').value;
@@ -147,7 +154,9 @@
                         let link2 = '/gist-files/' + binar_min + '-' + binar_max + '/' + particle_min + '-' + particle_max + '/{{ filename }}'
 
                         document.querySelector('#image_preview').src = link;
-                        document.querySelector('#image_gist').src = link2;
+                        let res = JSON.parse(httpGet(link2));
+                        document.querySelector('#image_gist').src = res['graph_image'];
+                        console.log(res);
                     });
 
                 </script>
