@@ -45,7 +45,7 @@
 
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group">
-                <img id="image_preview" src="/treat-files/60-255/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
+                <img id="image_preview" src="/treat-files/0-0/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -58,51 +58,36 @@
                                 <option value="3">x30000</option>
                                 <option value="4">x40000</option>
                                 <option value="5">x50000</option>
-                        </select>
+                          </select>
                 
                 
                 {{ form.image_wb.label }}
                 
                     <div class="form-row">
                       <div class="col-sm">
-                          <input class="form-control" id="image_wb_min" type="text" value="">
+                          <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0">
                       </div>
                       <div class="col-sm">
-                          <input class="form-control" id="image_wb_max" type="text" value="">
+                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255">
                       </div>
-                      <span id="binar_ok" class="btn btn-info">Ок</span>
                     </div>
-                <script language="JavaScript">
-                    const btn_ok_binar = document.querySelector('#binar_ok');
-
-                    btn_ok_binar.addEventListener('click', (event) => {
-                        let binar_min = document.querySelector('#image_wb_min').value;
-                        let binar_max = document.querySelector('#image_wb_max').value;
-
-                        let link = '/treat-files/' + binar_min + '-' + binar_max + '/1-15000/{{ filename }}'
-
-                        document.querySelector('#image_preview').src = link;
-                    });
-
-                </script>
 
 
                   {{ form.particle.label }}
 
                     <div class="form-row">
                       <div class="col-sm">
-                        <input type="text" class="form-control" placeholder="Min">
+                        <input class="form-control" id="particle_min" type="text" value="" placeholder="Min=0">
                       </div>
                       <div class="col-sm">
-                        <input type="text" class="form-control" placeholder="Max">
+                        <input class="form-control" id="particle_max" type="text" value="" placeholder="Min=15000">
                       </div>
-                      <button type="submit" class="btn btn-info">Ок</button>
                     </div>
-                    </form>  
-                    <form>
-                    {{ form.submit}}
+                          <span id="binar_ok" class="btn btn-info">Проанализировать</span>
 
-                    </form> 
+
+
+
 
             </div>
         </div>
@@ -137,6 +122,7 @@
         <div class="col-4 mb-1 bg-secondary text-white">
             <div class="form-group">
                 ГИСТОГРАММА
+                <img id="image_gist" src="/gist-files/{{ filename }}" upload class="img-fluid" alt="/gist-files/{{ filename }}">
             </div>
         </div>
         <div class="col-4 mb-1 bg-secondary text-white">
@@ -146,4 +132,24 @@
         </div>
     </div>
 </div>
+
+
+                <script language="JavaScript">
+                    const btn_ok_binar = document.querySelector('#binar_ok');
+
+                    btn_ok_binar.addEventListener('click', (event) => {
+                        let binar_min = document.querySelector('#image_wb_min').value;
+                        let binar_max = document.querySelector('#image_wb_max').value;
+                        let particle_min = document.querySelector('#particle_min').value;
+                        let particle_max = document.querySelector('#particle_max').value;
+
+                        let link = '/treat-files/' + binar_min + '-' + binar_max + '/' + particle_min + '-' + particle_max + '/{{ filename }}'
+                        let link2 = '/gist-files/' + binar_min + '-' + binar_max + '/' + particle_min + '-' + particle_max + '/{{ filename }}'
+
+                        document.querySelector('#image_preview').src = link;
+                        document.querySelector('#image_gist').src = link2;
+                    });
+
+                </script>
+                    </form>
 {% endblock %}

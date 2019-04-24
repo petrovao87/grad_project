@@ -2,12 +2,13 @@ from flask import Flask, render_template
 from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files, analise_file
 from web_app.model import db, Files, User, Experiment
 from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
-from web_app.treatment import treatment, treatment_analise
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file, session
+from web_app.treatment import treatment
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file, jsonify
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
 from PIL import Image
 import os
+from werkzeug.wrappers import Response
 
 
 def create_app():
@@ -118,12 +119,14 @@ def create_app():
                 print(request.form['image_wb_min'], 'REQUEST FORM')
                 contour_file(filename)
             else:
-                print('GET')
+                print('GET1111')
                 filename = request.args.get('file')
-                if form.validate_on_submit():
-                    crop_file(filename)
-                    contour_file(filename)
-                    session['filename'] = filename
+                print(filename)
+                # if form.validate_on_submit():
+                #     crop_file(filename)
+                #     contour = contour_file(filename)
+                #     print(contour, 'CONTOUR')
+
 
 
             return render_template('analise.html', form=form, filename=filename, title=title)
@@ -145,7 +148,7 @@ def create_app():
         image_cut = 'crop_'+filename
         return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
 
-    @app.route('/treat-files/<binar>/<particle>/<filename>')
+    @app.route('/treat-files/<binar>/<particle>/<filename>/')
     def contour_file(binar, particle, filename):
         """
 
@@ -154,15 +157,29 @@ def create_app():
         :param filename:
         :return:
         """
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
         binar_min = int(binar.split('-')[0])
         binar_max = int(binar.split('-')[1])
-        result = treatment(filename, binar_min, binar_max)
-        return send_file(os.path.join(result), attachment_filename='image.jpg')
+        particle_min = int(particle.split('-')[0])
+        particle_max = int(particle.split('-')[1])
+        result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
+        return send_file(os.path.join(UPLOAD_FOLDER + result['final_image']), attachment_filename='image.jpg')
 
-    @app.route('/analise-files/<binar>/<particle>/<filename>')
-    def analise_file(binar, particle, filename):
-        """ВОЗВРАЩАЕМ JSON"""
-        pass
+    @app.route('/gist-files/<binar>/<particle>/<filename>/')
+    def gist_file(binar, particle, filename):
+        """
+        :param binanr: (int:min-int:max) /12-15/
+        :param particle:
+        :param filename:
+        :return:
+        """
+        binar_min = int(binar.split('-')[0])
+        binar_max = int(binar.split('-')[1])
+        particle_min = int(particle.split('-')[0])
+        particle_max = int(particle.split('-')[1])
+        result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
+        return jsonify(result)
 
 
         # # filename = session.get('filename')
