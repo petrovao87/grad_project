@@ -103,7 +103,7 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     # plt.show()
 
     return {'final_image': r'\workdir\final_'+filename, 'graph_image': r'\workdir\graph_'+save_file+'.png',
-           'medium_phase_size': medium_phase_size, 'particle_count': len(contour_in_nano)}
+           'medium_phase_size': medium_phase_size, 'sigma': sigma, 'particle_count': len(contour_in_nano)}
 
 if __name__ == '__main__':
     treatment('test.jpg', 55, 255)
