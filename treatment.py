@@ -14,7 +14,7 @@ def treatment():
     # print(UPLOAD_FOLDER)
 
     print(''' В функцию передается загруженный файл''')
-    image_original = Image.open('698.jpg')
+    image_original = Image.open('test.jpg')
     print('''Меняем разрешение исходного изображения''')
     image_resize = image_original.resize((1600, 1200))
 
@@ -58,6 +58,8 @@ def treatment():
             cv2.drawContours(image_phasecather, [contour], -1, (250, 0, 0), -1)
     print(''' сохраняем изображение с закрашенными контурами''')
     cv2.imwrite(r'workdir\file_name.jpg', image_phasecather)
+
+
 
 
 def treatment_analise():
