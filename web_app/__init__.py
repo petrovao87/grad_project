@@ -1,18 +1,18 @@
-from flask import Flask, render_template
-from web_app.funcs import get_html, allowed_file, upload_file, save_file, all_files, analise_file
-from web_app.model import db, Files, User, Experiment
-from web_app.forms import LoginForm, RegistrForm, DownloadForm, ProjectsForm
-from web_app.treatment import treatment
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file, jsonify
-from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from datetime import datetime
-from PIL import Image
 import os
+
+from datetime import datetime
+from flask import Flask, flash, jsonify, redirect, render_template, request, send_file, send_from_directory, url_for
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
+from PIL import Image
 from werkzeug.wrappers import Response
+
+from web_app.funcs import  allowed_file, all_files, analise_file, get_html, save_file, upload_file
+from web_app.forms import DownloadForm, LoginForm, ProjectsForm, RegistrForm
+from web_app.model import db, Experiment,Files, User
+from web_app.treatment import treatment
 
 
 def create_app():
-
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
     db.init_app(app)
@@ -21,6 +21,7 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'login'
 
+# Роуты для регистрации и авторизации пользователя
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
@@ -92,14 +93,12 @@ def create_app():
         time = datetime.now()
         return render_template('registr.html', page_title=title, form=registr_form, time=time)
 
-
     @app.route('/process-registr', methods=['POST'])
     def process_registr():
         form = RegistrForm()
         if form.validate_on_submit():
             print(User.query.filter(User.username == form.username.data).count())
             if not User.query.filter(User.username == form.username.data).count():
-            #user = User.query.filter(User.username == form.username.data).first()
                 if not form.password1.data == form.password2.data:
                     flash('Пароли не совпадают')
                     return redirect(url_for('registr'))
@@ -113,33 +112,22 @@ def create_app():
             return redirect(url_for('login'))
         return redirect(url_for('login'))
 
+# Роуты анализа изображения
     @app.route('/analise', methods=['GET', 'POST'])
     def analise():
         filename = None
         if current_user.is_authenticated:
             title = 'TEST'
             form = DownloadForm()
-            print(current_user.id)
             if request.method == 'POST':
-                print('POST')
-                # user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id)
-                print(request.form['image_wb_min'], 'REQUEST FORM')
+                # print(request.form['image_wb_min'], 'REQUEST FORM')
                 contour_file(filename)
             else:
-                print('GET1111')
+                # print('GET1111')
                 filename = request.args.get('file')
-                print(filename)
-                # if form.validate_on_submit():
-                #     crop_file(filename)
-                #     contour = contour_file(filename)
-                #     print(contour, 'CONTOUR')
-
-
-
+                # print(filename)
             return render_template('analise.html', form=form, filename=filename, title=title)
-            # user_id = User.query.filter(User.username == current_user.username).first()
-            #analise_file(current_user.id, form)
         else:
             return redirect(url_for('index'))
 
@@ -154,12 +142,12 @@ def create_app():
         image_cut = image_resize.crop(area)
         image_cut.save(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), 'JPEG')
         image_cut = 'crop_'+filename
-        return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), attachment_filename='image.jpg')
+        return send_file(os.path.join(UPLOAD_FOLDER, 'crop_'+filename), 
+                        attachment_filename='image.jpg')
 
     @app.route('/treat-files/<binar>/<particle>/<filename>/')
     def contour_file(binar, particle, filename):
         """
-
         :param binanr: (int:min-int:max) /12-15/
         :param particle:
         :param filename:
@@ -172,7 +160,8 @@ def create_app():
         particle_min = int(particle.split('-')[0])
         particle_max = int(particle.split('-')[1])
         result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
-        return send_file(os.path.join(UPLOAD_FOLDER + result['final_image']), attachment_filename='image.jpg')
+        return send_file(os.path.join(UPLOAD_FOLDER + result['final_image']), 
+                        attachment_filename='image.jpg')
 
     @app.route('/gist-files/<binar>/<particle>/<filename>/')
     def gist_file(binar, particle, filename):
@@ -189,17 +178,7 @@ def create_app():
         result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
         return jsonify(result)
 
-
-        # # filename = session.get('filename')
-        # print(filename, 'CONTOUR FILE')
-        # basedir = os.path.abspath(os.path.dirname(__file__))
-        # print(basedir)
-        # UPLOAD_FOLDER = os.path.join(basedir, r'uploads\workdir\\')
-        # form = DownloadForm()
-        # treatment(filename, form.image_wb_min, form.image_wb_max, form.particle_min, form.particle_max)
-        #
-        # return send_file(os.path.join(UPLOAD_FOLDER, 'final_'+filename), attachment_filename='image.jpg')
-
+# Роуты предыдущих результатов анализа из базы 
     @app.route('/projects', methods=['GET', 'POST'])
     def projects():
         if current_user.is_authenticated:
@@ -207,15 +186,6 @@ def create_app():
             form = ProjectsForm()
             print(current_user.id)
             experiment_time = datetime.now()
-            #db_exp = Experiment(name='exp3', image_scale='3', image_wb='3', image_cont='3',
-            #                    experiment_time=experiment_time, file_id='1', sample_name='ccc',
-            #                    alloy_name='ccc', comment='com3', average_size='3', deviation_size='3',
-            #                    shape_parameter='3', particles_number='3'
-            #                    )
-            #db_files = Files(file_name='file3', uploaded=experiment_time, user_id='2')
-            #db.session.add(db_exp)
-            #db.session.add(db_files)
-            #db.session.commit()
             list_average_size = []
             list_deviation_size = []
             list_shape_parameter = []
@@ -233,13 +203,13 @@ def create_app():
                 list_shape_parameter.append(result.shape_parameter)
                 list_particles_number.append(result.particles_number)
             average_dict = {'average_size': sum(list_average_size)/len(list_average_size),
-                           'average_dv': sum(list_deviation_size)/len(list_deviation_size),
-                           'average_sp': sum(list_shape_parameter)/len(list_shape_parameter),
+                            'average_dv': sum(list_deviation_size)/len(list_deviation_size),
+                            'average_sp': sum(list_shape_parameter)/len(list_shape_parameter),
                             'average_pn': sum(list_particles_number)/len(list_particles_number)}
             print(average_dict, 'average')
-
-            return render_template('projects.html', form=form, experiment_list=experiment_list, result_list=result_list,
-                                   title=title, average_dict=average_dict, list_join=list_join)
+            return render_template('projects.html', form=form, experiment_list=experiment_list, 
+                                result_list=result_list, title=title, average_dict=average_dict, 
+                                list_join=list_join)
         else:
             return redirect(url_for('index'))
 
