@@ -37,6 +37,10 @@ def create_app():
     def uploaded_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
+    @app.route('/kotik/kotik.jpg')
+    def kotik():
+        return send_from_directory(app.config["UPLOAD_FOLDER"], 'kotik.jpg')
+
     @app.route('/workdir/<filename>')
     def workdir_uploaded_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"] + '/workdir', filename)

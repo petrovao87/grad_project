@@ -104,15 +104,15 @@
                         <tbody>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Средний размер, нм</p></th>
-                                <td>100</td>
+                                <td id="medium_phase_size">~</td>
                             </tr>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Погрешность, нм</p></th>
-                                <td>100</td>
+                                <td id="sigma">~</td>
                             </tr>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Количество частиц</p></th>
-                                <td>100</td>
+                                <td id="particle_count">~</td>
                             </tr>
                         </tbody>
                     </table>
@@ -122,7 +122,7 @@
         <div class="col-4 mb-1 bg-secondary text-white">
             <div class="form-group">
                 ГИСТОГРАММА
-                <img id="image_gist" src="/gist-files/{{ filename }}" upload class="img-fluid" alt="/gist-files/{{ filename }}">
+                <img id="image_gist" src="/kotik/kotik.jpg" upload class="img-fluid" alt="/gist-files/{{ filename }}">
             </div>
         </div>
         <div class="col-4 mb-1 bg-secondary text-white">
@@ -156,6 +156,9 @@
                         document.querySelector('#image_preview').src = link;
                         let res = JSON.parse(httpGet(link2));
                         document.querySelector('#image_gist').src = res['graph_image'];
+                        document.querySelector('#medium_phase_size').innerText = res['medium_phase_size'];
+                        document.querySelector('#sigma').innerText = res['sigma'];
+                        document.querySelector('#particle_count').innerText = res['particle_count'];
                         console.log(res);
                     });
 
