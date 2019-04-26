@@ -9,19 +9,19 @@
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.sample_name.label }}
-                {{ form.sample_name() }}
+                <input class="form-control" id="sample_name" type="text" value="" placeholder="">
             </div>
         </div>
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.alloy_name.label }}
-                {{ form.alloy_name() }}
+                <input class="form-control" id="alloy_name" type="text" value="" placeholder="">
             </div>
         </div>
         <div class="col-6 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.comment.label }}
-                {{ form.comment() }}
+                <input class="form-control" id="comment" type="text" value="" placeholder="">
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
                      </div>
                  </div>
                     <div class="form-group">
+                        <span id="db_ok" class="btn btn-info">БД</span>
                     </div>
-                {{ form.submit_upload() }}
             </div>
         </div>
     </form>
@@ -104,15 +104,15 @@
                         <tbody>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Средний размер, нм</p></th>
-                                <td>100</td>
+                                <td id="medium_phase_size">~</td>
                             </tr>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Погрешность, нм</p></th>
-                                <td>100</td>
+                                <td id="sigma">~</td>
                             </tr>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Количество частиц</p></th>
-                                <td>100</td>
+                                <td id="particle_count">~</td>
                             </tr>
                         </tbody>
                     </table>
@@ -122,7 +122,7 @@
         <div class="col-4 mb-1 bg-secondary text-white">
             <div class="form-group">
                 ГИСТОГРАММА
-                <img id="image_gist" src="/gist-files/{{ filename }}" upload class="img-fluid" alt="/gist-files/{{ filename }}">
+                <img id="image_gist" src="/kotik/kotik.jpg" upload class="img-fluid" alt="/gist-files/{{ filename }}">
             </div>
         </div>
         <div class="col-4 mb-1 bg-secondary text-white">
@@ -136,6 +136,7 @@
 
                 <script language="JavaScript">
                     const btn_ok_binar = document.querySelector('#binar_ok');
+                    const btn_ok_db = document.querySelector('#db_ok');
 
                     function httpGet(theUrl) {
                             var xmlHttp = new XMLHttpRequest();
@@ -156,7 +157,29 @@
                         document.querySelector('#image_preview').src = link;
                         let res = JSON.parse(httpGet(link2));
                         document.querySelector('#image_gist').src = res['graph_image'];
+                        document.querySelector('#medium_phase_size').innerText = res['medium_phase_size'];
+                        document.querySelector('#sigma').innerText = res['sigma'];
+                        document.querySelector('#particle_count').innerText = res['particle_count'];
                         console.log(res);
+                    });
+
+                    btn_ok_db.addEventListener('click', (event) => {
+                        let binar_min = document.querySelector('#image_wb_min').value;
+                        let binar_max = document.querySelector('#image_wb_max').value;
+                        let particle_min = document.querySelector('#particle_min').value;
+                        let particle_max = document.querySelector('#particle_max').value;
+                        let sample_name = document.querySelector('#sample_name').value;
+                        let alloy_name = document.querySelector('#alloy_name').value;
+                        let comment = document.querySelector('#comment').value;
+
+
+                        let link = '/treat-files/' + binar_min + '-' + binar_max + '/' + particle_min + '-' + particle_max + '/{{ filename }}'
+                        let link2 = '/save-files/' + binar_min + '-' + binar_max + '/' + particle_min + '-' + particle_max+ '/' + sample_name + '/' + alloy_name + '/' + comment + '/{{ filename }}'
+
+                        document.querySelector('#image_preview').src = link;
+                        let res = JSON.parse(httpGet(link2));
+                        console.log(res);
+                        window.location.replace("http://127.0.0.1:5000/analise?file={{ filename }}")
                     });
 
                 </script>

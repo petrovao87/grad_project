@@ -91,18 +91,26 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     gaus = stats.norm.pdf(sorted_contour_in_nano, mu, sigma)
     plt.plot(sorted_contour_in_nano, gaus, '-o')
     plt.hist(contour_in_nano, bins=20, normed=True, facecolor='red', edgecolor='black')
-    save_file = filename.split('.')[0]
+    # save_file = filename.split('.')[0]
+    # try:
+    #     os.remove(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+    #     print('файл создан')
+    #     plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+    # except FileNotFoundError:
+    #     print('Файла нет')
+    # plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+
     try:
-        os.remove(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+        os.remove(UPLOAD_FOLDER + r'\workdir\graph_' + filename)
         print('файл создан')
-        plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+        plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + filename)
     except FileNotFoundError:
         print('Файла нет')
-    plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
+    plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + filename)
 
     # plt.show()
 
-    return {'final_image': r'\workdir\final_'+filename, 'graph_image': r'\workdir\graph_'+save_file+'.png',
+    return {'final_image': r'\workdir\final_'+filename, 'graph_image': r'\workdir\graph_'+filename,
            'medium_phase_size': medium_phase_size, 'sigma': sigma, 'particle_count': len(contour_in_nano)}
 
 if __name__ == '__main__':
