@@ -21,24 +21,14 @@ class DownloadForm(FlaskForm):
     alloy_name = StringField('Название сплава', validators=[DataRequired()], render_kw={'class': 'form-control'})
     comment = StringField('Описание образца', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
-    upload = FileField('Загрузка изображения')
     submit_upload = SubmitField('Загрузить', render_kw={'class': 'btn btn-info'})
 
     image_scale = StringField('Увеличение при съемке', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    image_wb = StringField('Бинаризация', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    image_wb_min = IntegerField('Min', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
-    image_wb_max = IntegerField('Max', validators=[NumberRange(min=0, max=255)], render_kw={'class': 'form-control'})
+    image_wb = StringField('Бинаризация')
 
-    particle = StringField('Выбор частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    particle_min = IntegerField('Выбор частиц Min', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    particle_max = IntegerField('Выбор частиц Max', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
-    submit = SubmitField('Проанализировать', render_kw={'class': 'btn btn-info'})
+    particle = StringField('Выбор частиц')
 
-    average_size = StringField('Средний размер частиц, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    deviation_size = StringField('Отклонение, нм', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    shape_parameter = StringField('Параметр формы', validators=[DataRequired()], render_kw={'class': 'form-control'})
-    particles_number = StringField('Количество частиц', validators=[DataRequired()], render_kw={'class': 'form-control'})
 
 
 class ProjectsForm(FlaskForm):

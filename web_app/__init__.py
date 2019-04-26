@@ -7,6 +7,7 @@ from flask import Flask, flash, request, redirect, url_for, send_from_directory,
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from datetime import datetime
 from PIL import Image
+from sqlalchemy import exc
 import os
 from werkzeug.wrappers import Response
 
@@ -44,6 +45,10 @@ def create_app():
     @app.route('/workdir/<filename>')
     def workdir_uploaded_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"] + '/workdir', filename)
+
+    @app.route('/workdir_final/final_<filename>')
+    def workdir_final_file(filename):
+        return send_from_directory(app.config["UPLOAD_FOLDER"], '/final_' + filename)
 
     @app.route('/start', methods=['GET', 'POST'])
     def start():
@@ -124,7 +129,7 @@ def create_app():
                 print('POST')
                 # user_id = User.query.filter(User.username == current_user.username).first()
                 filename = upload_file(current_user.id)
-                print(request.form['image_wb_min'], 'REQUEST FORM')
+                # print(request.form['image_wb_min'], 'REQUEST FORM')
                 contour_file(filename)
             else:
                 print('GET1111')
@@ -189,6 +194,52 @@ def create_app():
         result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
         return jsonify(result)
 
+    @app.route('/save-files/<binar>/<particle>/<sample_name>/<alloy_name>/<comment>/<filename>/')
+    def save_file(binar, particle, sample_name, alloy_name, comment, filename):
+        """
+        :param binanr: (int:min-int:max) /12-15/
+        :param particle:
+        :param filename:
+        :return:
+        """
+        # form = DownloadForm()
+
+        # sample_name = form.sample_name.data
+        # alloy_name = form.alloy_name.data
+        # comment = form.comment.data
+
+        image_scale = 1000
+        binar_min = int(binar.split('-')[0])
+        binar_max = int(binar.split('-')[1])
+        particle_min = int(particle.split('-')[0])
+        particle_max = int(particle.split('-')[1])
+        experiment_time = datetime.now()
+
+        result = treatment(filename, binar_min, binar_max, particle_min, particle_max)
+        average_size = result['medium_phase_size']
+        deviation_size = result['sigma']
+        particles_number = result['particle_count']
+
+        file_id = Files.query.filter((Files.file_name == filename)).first().id
+        print(file_id)
+        new_experiment = Experiment(sample_name=sample_name, alloy_name=alloy_name, comment=comment,
+                                    image_scale=image_scale, binar_min=binar_min, binar_max=binar_max,
+                                    particle_min=particle_min, particle_max=particle_max,
+                                    experiment_time=experiment_time, average_size=average_size,
+                                    deviation_size=deviation_size, particles_number=particles_number,
+                                    file_id=file_id)
+        try:
+            db.session.add(new_experiment)
+            db.session.commit()
+            flash('Запись добавлена')
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash('Такая запись уже есть')
+            print('INTEGRITY ERROR')
+        except exc:
+            print(exc, 'Ошибка')
+        return redirect(url_for('start'))
+
 
         # # filename = session.get('filename')
         # print(filename, 'CONTOUR FILE')
@@ -218,7 +269,6 @@ def create_app():
             #db.session.commit()
             list_average_size = []
             list_deviation_size = []
-            list_shape_parameter = []
             list_particles_number = []
             experiment_list = Experiment.query.order_by(Experiment.id).all()
             result_list = Experiment.query.order_by(Experiment.id).all()
@@ -227,16 +277,17 @@ def create_app():
             for i in list_join:
                 print(i.files.file_name, i.files.users.username, 'for')
             print(list_join, 'result')
-            for result in result_list:
-                list_average_size.append(result.average_size)
-                list_deviation_size.append(result.deviation_size)
-                list_shape_parameter.append(result.shape_parameter)
-                list_particles_number.append(result.particles_number)
-            average_dict = {'average_size': sum(list_average_size)/len(list_average_size),
-                           'average_dv': sum(list_deviation_size)/len(list_deviation_size),
-                           'average_sp': sum(list_shape_parameter)/len(list_shape_parameter),
-                            'average_pn': sum(list_particles_number)/len(list_particles_number)}
-            print(average_dict, 'average')
+            if len(result_list) > 0:
+                for result in result_list:
+                    list_average_size.append(result.average_size)
+                    list_deviation_size.append(result.deviation_size)
+                    list_particles_number.append(result.particles_number)
+                average_dict = {'average_size': sum(list_average_size)/len(list_average_size),
+                               'average_dv': sum(list_deviation_size)/len(list_deviation_size),
+                                'average_pn': sum(list_particles_number)/len(list_particles_number)}
+                print(average_dict, 'average')
+            else:
+                average_dict = {'average_size': '~', 'average_dv': '~', 'average_pn': '~'}
 
             return render_template('projects.html', form=form, experiment_list=experiment_list, result_list=result_list,
                                    title=title, average_dict=average_dict, list_join=list_join)
