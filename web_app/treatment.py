@@ -17,6 +17,7 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     image_original = Image.open(UPLOAD_FOLDER + filename)
     print('''Меняем разрешение исходного изображения''')
     image_resize = image_original.resize((1600, 1200))
+    image_resize.save(UPLOAD_FOLDER + r'workdir\rs_' + filename, 'JPEG')
 
     print(''' обрезаем нижнюю часть изображения''')
     area = (0, 0, 1600, 1115)
@@ -51,7 +52,7 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     #max_contour_area = 10000
 
     print(''' Закрашиваем контуры''')
-    image_phasecather = cv2.imread(UPLOAD_FOLDER + r'workdir\crop_' + filename, cv2.CV_32FC1)
+    image_phasecather = cv2.imread(UPLOAD_FOLDER + r'workdir\rs_' + filename, cv2.CV_32FC1)
     for contour in contours:
         #print(contour)
         #if cv2.contourArea(contour) > 1500:
