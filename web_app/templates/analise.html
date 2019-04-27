@@ -3,25 +3,26 @@
 {% block body %}
 
 
+
 <form  enctype=multipart/form-data method="POST">
 <div class="container">
     <div class="row">
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.sample_name.label }}
-                <input class="form-control" id="sample_name" type="text" value="" placeholder="">
+                <input class="form-control" id="sample_name" type="text" value="" placeholder=""></input>
             </div>
         </div>
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.alloy_name.label }}
-                <input class="form-control" id="alloy_name" type="text" value="" placeholder="">
+                <input class="form-control" id="alloy_name" type="text" value="" placeholder=""></input>
             </div>
         </div>
         <div class="col-6 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.comment.label }}
-                <input class="form-control" id="comment" type="text" value="" placeholder="">
+                <input class="form-control" id="comment" type="text" value="" placeholder=""></input>
             </div>
         </div>
     </div>
@@ -30,77 +31,72 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-                <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image">
+            <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image"></img>
             <div class="form-group">
-                 <div class="row">
+                <div class="row">
                     <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+                <img id="image_preview" src="/treat-files/0-0/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}"></img>
+            </div>
+        </div>
+        <div class="col mb-1 bg-secondary text-white">
+            <div class="form-group">
+            Увеличение при съемке
+            <select class="custom-select custom-select-sm">
+                <option value="1">x10000</option>
+                <option value="2">x20000</option>
+                <option value="3">x30000</option>
+                <option value="4">x40000</option>
+                <option value="5">x50000</option>
+            </select>
+            {{ form.image_wb.label }}
+            <div class="form-row">
+                <div class="col-sm">
+                    <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0"></input>
+                      </div>
+                      <div class="col-sm">
+                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255"></input>
+                      </div>
+                    </div>
+            {{ form.particle.label }}
+            <div class="form-row mb-1">
+                <div class="col-sm">
+                    <input class="form-control" id="particle_min" type="text" value="" placeholder="Min=0"></input>
+                </div>
+                <div class="col-sm">
+                    <input class="form-control" id="particle_max" type="text" value="" placeholder="Min=15000"></input>
+                </div>
+                <div class="form-row justify-content-around" >
+                    <div class="col-sm">
+                        <span id="binar_ok" style="width: 170px; height: 38px" class="btn btn-info">Проанализировать</span></div>
+                    <div class="col-sm">
+                        <span id="db_ok" style="width: 170px; height: 38px" class="btn btn-info">Записать в базу</span>
+
                      </div>
-                 </div>
-                    <div class="form-group">
-                        <span id="db_ok" class="btn btn-info">БД</span>
-                    </div>
+                        
+                    
+                </div>
             </div>
-        </div>
-    </form>
-
-        <div class="col mb-1 bg-secondary text-white">
-            <div class="form-group">
-                <img id="image_preview" src="/treat-files/0-0/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
-            </div>
-        </div>
-        <div class="col mb-1 bg-secondary text-white">
-            <div class="form-group">
-
-                          Увеличение при съемке
-                          <select class="custom-select custom-select-sm">
-                                <option value="1">x10000</option>
-                                <option value="2">x20000</option>
-                                <option value="3">x30000</option>
-                                <option value="4">x40000</option>
-                                <option value="5">x50000</option>
-                          </select>
-                
-                
-                {{ form.image_wb.label }}
-                
-                    <div class="form-row">
-                      <div class="col-sm">
-                          <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0">
-                      </div>
-                      <div class="col-sm">
-                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255">
-                      </div>
-                    </div>
-
-
-                  {{ form.particle.label }}
-
-                    <div class="form-row">
-                      <div class="col-sm">
-                        <input class="form-control" id="particle_min" type="text" value="" placeholder="Min=0">
-                      </div>
-                      <div class="col-sm">
-                        <input class="form-control" id="particle_max" type="text" value="" placeholder="Min=15000">
-                      </div>
-                    </div>
-                          <span id="binar_ok" class="btn btn-info">Проанализировать</span>
-
-
-
-
-
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-4 mb-1 bg-secondary text-white">
-            <div class="form-group">
-                <p class="font-weight-bold" >Результаты:</p>
-                <div class="row ">
-                    <table class="table bg-light table-striped table-bordered text-dark" >
+<div class="container" >
+    <div class="row justify-content-around">
+        <div class="col-1 mb-1 bg-secondary text-white">
+            </div>
+                <div class="col-5 mb-1 bg-secondary text-white">
+                    <div class="form-group">
+                    <h5> Параметры частиц</h5><br>
+                    <div class="row ">
+                    <table class="table bg-light table-striped table-bordered text-dark" style="width: 320px; height: 250px">
                         <tbody>
                             <tr class="mb-1">
                                 <th scope="row"><p class="font-weight-normal">Средний размер, нм</p></th>
@@ -119,16 +115,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-4 mb-1 bg-secondary text-white">
+        <div class="col-5 mb-1 bg-secondary text-white">
             <div class="form-group">
-                ГИСТОГРАММА
-                <img id="image_gist" src="/kotik/kotik.jpg" upload class="img-fluid" alt="/gist-files/{{ filename }}">
+                 <h5> Гистограмма распределения части</h5><br>
+                <img id="image_gist" style="width: 320px; height: 250px" src="/kotik/kotik.jpg" upload class="img-fluid" alt="/gist-files/{{ filename }}">
             </div>
         </div>
-        <div class="col-4 mb-1 bg-secondary text-white">
-            <div class="form-group">
-                ГИСТОГРАММА
-            </div>
+        <div class="col-1 mb-1 bg-secondary text-white">
         </div>
     </div>
 </div>
