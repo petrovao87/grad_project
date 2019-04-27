@@ -119,5 +119,10 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
            'medium_phase_size': '%.2f' % medium_phase_size, 'sigma': '%.2f' % sigma,
             'particle_count': len(contour_in_nano), 'dt': dt}
 
+    contour_in_nano = []
+    min_binary = 0
+    max_binary = 0
+
+
 if __name__ == '__main__':
-    treatment('test.jpg', 55, 255)
+    treatment()

@@ -80,8 +80,11 @@
                                     </table>
 
                                     <div id="container" style=" margin: 0 auto"></div>
-                                    <img class="card-img-top" src="/workdir/graph_{{ list.files.experiment_time.strftime(%B%d%Y%H%M%S) }}{{ list.files.file_name }}" alt= {{ list.files.file_name }}>
-                                    <div id="container2" style="width:100%; height:400px;"></div>
+                                    {% for experiment in experiment_list %}
+                                    {% if experiment.file_id == list.files.id %}
+                                    <img class="card-img-top" src="/workdir/graph_{{ experiment.experiment_time.strftime('%B%d%Y%H%M%S') }}{{ list.files.file_name }}" alt= {{ list.files.file_name }}>
+                                    {% endif %}
+                                    {% endfor %}
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
