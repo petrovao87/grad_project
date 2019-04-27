@@ -172,7 +172,7 @@
                         document.querySelector('#image_preview').src = link;
                         let res = JSON.parse(httpGet(link2));
                         console.log(res);
-                        window.location.replace("http://127.0.0.1:5000/analise?file={{ filename }}")
+                        window.location.replace("/analise?file={{ filename }}")
                     });
 
                 </script>
