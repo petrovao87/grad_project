@@ -1,65 +1,54 @@
-from PIL import Image, ImageDraw
+from PIL import Image
 import cv2
-import numpy as np
 import os
 import math
 import matplotlib.pyplot as plt
 import scipy.stats as stats
-from numpy import histogram, std
+from numpy import std
 from datetime import datetime
 
 
 def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_area):
     basedir = os.path.abspath(os.path.dirname(__file__))
     UPLOAD_FOLDER = os.path.join(basedir, r'uploads\\')
-    print(UPLOAD_FOLDER)
 
-    print(''' В функцию передается загруженный файл''')
+    ''' В функцию передается загруженный файл'''
     image_original = Image.open(UPLOAD_FOLDER + filename)
-    print('''Меняем разрешение исходного изображения''')
+    '''Меняем разрешение исходного изображения'''
     image_resize = image_original.resize((1600, 1200))
     image_resize.save(UPLOAD_FOLDER + r'workdir\rs_' + filename, 'JPEG')
 
-    print(''' обрезаем нижнюю часть изображения''')
+    ''' обрезаем нижнюю часть изображения'''
     area = (0, 0, 1600, 1115)
     image_cut = image_resize.crop(area)
     image_cut.save(UPLOAD_FOLDER + r'workdir\crop_'+ filename, 'JPEG')
 
-    print('''переходим к библиотеке OpenCV, говорим программе, что изображение ч/б и одноканальное''')
+    '''переходим к библиотеке OpenCV, говорим программе, что изображение ч/б и одноканальное'''
     '''не работает открытие файла, постараюсь в ближайшие дни переделать'''
     image_test = cv2.imread(UPLOAD_FOLDER + r'workdir\crop_' + filename, cv2.CV_8UC1)
 
-    print(''' добавляем размытие к изображению, чтобы убрать шумы''')
+    ''' добавляем размытие к изображению, чтобы убрать шумы'''
     image_test_blurred = cv2.blur(image_test, (5, 5), 0)
 
-    print(''' Эти значения должны быть крайними на бегунке бинаризации''')
-    #min_binary = 60
-    #max_binary = 255
-    print(''' магия бинаризации''')
+    '''Бинаризации'''
     (_, image_test_binary) = cv2.threshold(image_test_blurred, min_binary, max_binary, cv2.THRESH_BINARY)
     cv2.imwrite(UPLOAD_FOLDER + r'workdir\binar_' + filename, image_test_binary)
 
-    print('''тут на бинаризованном изображении определяются графические контуры''')
+    '''тут на бинаризованном изображении определяются графические контуры'''
     image_test_canny = cv2.Canny(image_test_binary, 100, 300)
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
     image_test_canny_closed = cv2.morphologyEx(image_test_canny, cv2.MORPH_CLOSE, kernel)
     cv2.imwrite(UPLOAD_FOLDER + r'workdir\canny_' + filename, image_test_canny_closed)
 
-    print('''магия поиска контуров и определение их взаимосвязи и иерархии''')
+    '''Поиск контуров и определение их взаимосвязи и иерархии'''
     contours, hierarchy = cv2.findContours(image_test_canny_closed.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    print(''' Минимальное и максимальное (след.строка) значение площади частицы, ,будут на бегунке''')
-    #min_contour_area = 0
-    #max_contour_area = 10000
-
-    print(''' Закрашиваем контуры''')
+    ''' Закрашиваем контуры'''
     image_phasecather = cv2.imread(UPLOAD_FOLDER + r'workdir\rs_' + filename, cv2.CV_32FC1)
     for contour in contours:
-        #print(contour)
-        #if cv2.contourArea(contour) > 1500:
         if (cv2.contourArea(contour) > min_contour_area) and (cv2.contourArea(contour) < max_contour_area):
             cv2.drawContours(image_phasecather, [contour], -1, (250, 0, 0), -1)
-    print(''' сохраняем изображение с закрашенными контурами''')
+    ''' сохраняем изображение с закрашенными контурами'''
     cv2.imwrite(UPLOAD_FOLDER + r'workdir\final_' + filename, image_phasecather)
 
     '''отсортируем "лишние" мелкие контуры по площади, остальные перепишем в новый список'''
@@ -69,7 +58,6 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
         if 1500 <= cv2.contourArea(contour):
             a = cv2.contourArea(contour)
             contour_in_nano.append(a)
-    print(contour_in_nano)
 
     '''Переведем пиксели в нанометры (1:4), а таже из площади получим диаметр каждой частички 
     (пока по формуле для круга)'''
@@ -93,36 +81,19 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
     gaus = stats.norm.pdf(sorted_contour_in_nano, mu, sigma)
     plt.plot(sorted_contour_in_nano, gaus, '-o')
     plt.hist(contour_in_nano, bins=20, normed=True, facecolor='red', edgecolor='black')
-    # save_file = filename.split('.')[0]
-    # try:
-    #     os.remove(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
-    #     print('файл создан')
-    #     plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
-    # except FileNotFoundError:
-    #     print('Файла нет')
-    # plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + save_file + '.png')
 
     dt = datetime.now().strftime('%B%d%Y%H%M%S')
-    print(dt)
 
     try:
         os.remove(UPLOAD_FOLDER + r'\workdir\graph_' + dt + filename)
-        print('файл создан')
         plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + dt + filename)
     except FileNotFoundError:
-        print('Файла нет')
         plt.savefig(UPLOAD_FOLDER + r'\workdir\graph_' + dt + filename)
-
-    # plt.show()
 
     return {'final_image': r'\workdir\final_'+filename, 'graph_image': r'\workdir\graph_' + dt + filename,
            'medium_phase_size': '%.2f' % medium_phase_size, 'sigma': '%.2f' % sigma,
             'particle_count': len(contour_in_nano), 'dt': dt}
 
-    contour_in_nano = []
-    min_binary = 0
-    max_binary = 0
-
 
 if __name__ == '__main__':
-    treatment()
+    treatment('test.jpg', 50, 255, 1500, 15000)
