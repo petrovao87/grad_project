@@ -33,7 +33,7 @@ $ pip install -r requirements.txt
 ##### Create the database
 
 ```
-$ python manage.py recreate_db
+$ python recreate_db.py
 ```
 
 ## Running the app
