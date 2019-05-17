@@ -10,19 +10,19 @@
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.sample_name.label }}
-                <input class="form-control" id="sample_name" type="text" value="" placeholder=""></input>
+                <input class="form-control" id="sample_name" type="text" value="" placeholder="">
             </div>
         </div>
         <div class="col-3 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.alloy_name.label }}
-                <input class="form-control" id="alloy_name" type="text" value="" placeholder=""></input>
+                <input class="form-control" id="alloy_name" type="text" value="" placeholder="">
             </div>
         </div>
         <div class="col-6 mb-1 bg-secondary text-white">
             <div class="form-group">
                 {{ form.comment.label }}
-                <input class="form-control" id="comment" type="text" value="" placeholder=""></input>
+                <input class="form-control" id="comment" type="text" value="" placeholder="">
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
 <div class="container">
     <div class="row">
         <div class="col mb-1 bg-secondary text-white">
-            <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image"></img>
+            <img src="/mediafiles/{{ filename }}" upload class="img-fluid" alt="Responsive image">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4">
@@ -40,9 +40,10 @@
             </div>
         </div>
 </form>
+
         <div class="col mb-1 bg-secondary text-white">
             <div class="form-group">
-                <img id="image_preview" src="/treat-files/0-0/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}"></img>
+                <img id="image_preview" src="/treat-files/0-0/1-15000/{{ filename }}" upload class="img-fluid" alt="/treat-files/{{ filename }}">
             </div>
         </div>
         <div class="col mb-1 bg-secondary text-white">
@@ -58,19 +59,19 @@
             {{ form.image_wb.label }}
             <div class="form-row">
                 <div class="col-sm">
-                    <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0"></input>
+                    <input class="form-control" id="image_wb_min" type="text" value="" placeholder="Min=0">
                       </div>
                       <div class="col-sm">
-                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255"></input>
+                          <input class="form-control" id="image_wb_max" type="text" value="" placeholder="Max=255">
                       </div>
                     </div>
             {{ form.particle.label }}
             <div class="form-row mb-1">
                 <div class="col-sm">
-                    <input class="form-control" id="particle_min" type="text" value="" placeholder="Min=0"></input>
+                    <input class="form-control" id="particle_min" type="text" value="" placeholder="Min=0">
                 </div>
                 <div class="col-sm">
-                    <input class="form-control" id="particle_max" type="text" value="" placeholder="Min=15000"></input>
+                    <input class="form-control" id="particle_max" type="text" value="" placeholder="Min=15000">
                 </div>
                 <div class="form-row justify-content-around" >
                     <div class="col-sm">
@@ -85,8 +86,7 @@
             </div>
             </div>
         </div>
-    </div>
-</div>
+
 
 <div class="container" >
     <div class="row justify-content-around">
@@ -125,6 +125,7 @@
         </div>
     </div>
 </div>
+
 
 
                 <script language="JavaScript">
@@ -172,9 +173,10 @@
                         document.querySelector('#image_preview').src = link;
                         let res = JSON.parse(httpGet(link2));
                         console.log(res);
+                        console.log(link);
                         window.location.replace("/analise?file={{ filename }}")
                     });
 
                 </script>
-                    </form>
+
 {% endblock %}

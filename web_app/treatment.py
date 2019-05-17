@@ -70,8 +70,6 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
         medium_phase_size = (sum(contour_in_nano)) / (len(contour_in_nano))
     else:
         medium_phase_size = (sum(contour_in_nano))
-    print('Средний диаметр - ', '%.2f' % medium_phase_size, 'нм, ', 'количество исследованных частиц - ',
-            len(contour_in_nano))
 
     '''Теперь графически покажем распределение частиц по размеру. Построим график равномерного распределения и 
     совместив с графиком нормального (гаусова) распределения'''

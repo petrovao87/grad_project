@@ -16,13 +16,21 @@
 <div class="p-2 mb-1 bg-info text-white">
     <div class="container">
         <div class="row">
-            <div class="col-8">
-                <a class="btn btn-outline-light" href="{{ url_for('index') }}" role="button">
+            <div class="col-6">
+                <a class="btn btn-outline-light" href="{{ url_for('start.index') }}" role="button">
                     <h5>PhaseCatcher</h5>
                 </a>
             </div>
-            <div class="col">
-                <!-- EMPTY -->
+            <div class="col-4">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {% for message in messages %}
+                            {{ message }}<br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
             </div>
             <div class="col text-center">
                 {% if current_user.is_authenticated %}
