@@ -20,6 +20,7 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='func_log.log'
                     )
 
+
 def create_app():
 
     app = Flask(__name__)
@@ -39,5 +40,4 @@ def create_app():
     def load_user(user_id):
         return User.query.get(user_id)
 
-    print(os.getenv('SECRET_KEY'))
     return app
