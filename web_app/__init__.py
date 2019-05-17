@@ -11,9 +11,6 @@ from web_app.user.views import blueprint as user_blueprint
 from web_app.analyse.views import blueprint as analyse_blueprint
 from web_app.exist_project.views import blueprint as exist_project_blueprint
 import logging
-import os
-
-os.environ["SECRET_KEY"] = "YOUR_SECRET_KEY_HERE"
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
