@@ -2,7 +2,7 @@
 /.idea
 /env
 /__pycache__/
-/uploads
+/uploads/workdir/*
 /web_app/__pycache__/
 python.org.html
 db_test.py
