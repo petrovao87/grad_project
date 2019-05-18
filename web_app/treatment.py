@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 from numpy import std
 from datetime import datetime
+import logging
 
 
 def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_area):
@@ -70,6 +71,9 @@ def treatment(filename, min_binary, max_binary, min_contour_area, max_contour_ar
         medium_phase_size = (sum(contour_in_nano)) / (len(contour_in_nano))
     else:
         medium_phase_size = (sum(contour_in_nano))
+
+    logging.info('Analyse results: Average diameter - %2f nm, number of particles - %s',
+                 medium_phase_size, len(contour_in_nano))
 
     '''Теперь графически покажем распределение частиц по размеру. Построим график равномерного распределения и 
     совместив с графиком нормального (гаусова) распределения'''

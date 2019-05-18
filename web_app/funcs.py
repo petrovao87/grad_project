@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from web_app.db import db
 from web_app.user.models import Files
 from web_app.analyse.models import Experiment
+import logging
 
 ALLOWED_EXTENSIONS = set(['png', 'bmp', 'jpg', 'jpeg'])
 
@@ -19,6 +20,7 @@ def get_html(url):
         result.raise_for_status()
         return result.text
     except(requests.Exception, ValueError):
+
         print('Сетевая ошибка')
         return False
 
@@ -43,6 +45,7 @@ def upload_file(user_id):
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             uploaded = datetime.now()
             save_file(filename, user_id)
+            logging.info('Upload file to folder, filename is %s', filename)
             return filename
 
 
@@ -65,8 +68,9 @@ def save_file(file_name, user_id):
         file_2_db = Files(file_name=file_name, uploaded=uploaded, user_id=user_id)
         db.session.add(file_2_db)
         db.session.commit( )
+        logging.info('Save file to the DB, filename is %s', file_name)
     else:
-        print('ФАЙЛ УЖЕ ЕСТЬ')
+        logging.info('File with filename %s is already exist in DB', file_name)
         pass
 
 

@@ -17,6 +17,11 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     filename='func_log.log'
                     )
 
+# logging.basicConfig(format='%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+#                     level=logging.DEBUG,
+#                     filename='func_log.log'
+#                     )
+
 
 def create_app():
 
