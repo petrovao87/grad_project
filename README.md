@@ -11,6 +11,13 @@ $ git clone https://github.com/petrovao87/grad_project.git
 $ cd grad_project
 ```
 
+##### Virtual Environment install & activate
+```
+$ pip install virtualenv
+$ env\scripts\activate  (for Windows systems)
+$ env\bin\activate  (for Unix systems)
+```
+
 ##### Install the dependencies
 
 ```
